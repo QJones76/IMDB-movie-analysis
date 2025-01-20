@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>IMDB Movie Analysis Dashboard</title>
+  <link rel="stylesheet" href="static/css/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.css">
+</head>
+
+<body>
+  <!-- Top section: Title and filter bar -->
+  <header class="top-of-page">
+    <div class="page-title">
+      <h1>IMDB Movie Analysis Dashboard</h1>
+      <p>Use the interactive charts below to explore the dataset!</p>
+    </div>
+
+    <div class="filter-bar">
+      <label for="genre-select">Select a genre(s):</label>
+      <select id="genre-select" class="genre" multiple></select>
+
+      <div id="year-range-slider"></div>
+      <span id="year-range-output">2005 - 2025</span>
+    </div>
+  </header>
+
+  <!-- Main content area for charts -->
+  <section class="chart-container">
+    <div class="chart" id="chart1">Chart 1</div>
+    <div class="chart" id="chart2">Chart 2</div>
+    <div class="chart" id="chart3">Chart 3</div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.js"></script>
+  <script>
+    let slider = document.getElementById('year-range-slider');
+    noUiSlider.create(slider, {
+      start: [2005, 2025],
+      connect: true,
+      range: { 'min': 2005, 'max': 2025 },
+      step: 1,
+      tooltips: [true, true],
+      format: {
+        to: function (value) { return Math.round(value); },
+        from: function (value) { return Number(value); }
+      }
+    });
+
+    slider.noUiSlider.on('update', function (values) {
+      document.getElementById('year-range-output').innerText = values[0] + ' - ' + values[1];
+    });
+  </script>
+
+</body>
+
+</html>
