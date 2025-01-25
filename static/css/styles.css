@@ -155,8 +155,8 @@ body {
 
 /* Style each chart container */
 .chart {        
-  max-width: 1250px;
-  max-height: 820px;     
+  max-width: 1500px;
+  max-height: 1500px;     
   background-color: #f0f0f0;
   border: 1px solid #ccc;    
   border-radius: 8px;         
@@ -164,5 +164,5 @@ body {
 
 #chart1 {
   height: 600px;
-  width: 1200px;
+  width: 1500px;
 }
