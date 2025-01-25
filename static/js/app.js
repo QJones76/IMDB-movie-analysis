@@ -157,9 +157,6 @@ function buildCharts(filteredData) {
 
 //// STOP!!!!!
 function buildBubbleChart(filteredData) {
-    // Log the filtered data to ensure it's being passed correctly
-    console.log("Filtered Data: ", filteredData);
-
     // Create an object to store the sum of gross_ww for each production company
     const productionSums = {};
 
@@ -216,9 +213,6 @@ function buildBubbleChart(filteredData) {
         .attr("viewBox", "0 0 800 800")
         .attr("preserveAspectRatio", "xMidYMid meet");
 
-    // Log the SVG element to confirm it's created correctly
-    console.log("SVG Element: ", svg);
-
     // Create a scale to adjust the size of the bubbles
     const sizeScale = d3.scaleSqrt()
         .domain([0, d3.max(top100Companies, d => d.value)])  // Map the values of gross_ww
@@ -230,9 +224,6 @@ function buildBubbleChart(filteredData) {
         .enter()
         .append("g")
         .attr("transform", d => `translate(${d.x},${d.y})`);
-
-    // Log the nodes to ensure they're being created
-    console.log("Nodes: ", node);
 
     // Create the bubbles (circles)
     node.append("circle")
@@ -251,10 +242,86 @@ function buildBubbleChart(filteredData) {
     node.append("title")
         .text(d => `${d.data.key}\nGross: $${d.value.toLocaleString()}`);
 
-    // Log the final node to confirm the circles and text are added
-    console.log("Final Node: ", node);
 }
 
+
+// Build stacked bar chart
+// function buildStackedBar(filteredData) {
+//     // Step 1: Calculate the variation for each movie
+//     filteredData.forEach(d => {
+//         d.variation = Math.abs(d.gross_ww - d.budget); // Absolute difference between gross and budget
+//     });
+
+//     // Step 2: Sort the data by variation and get the top 10 movies
+//     const topMoviesByVariation = filteredData
+//         .sort((a, b) => b.variation - a.variation)
+//         .slice(0, 10);
+
+//     // Step 3: Prepare data for the stacked bar chart
+//     const stackedData = topMoviesByVariation.map(d => ({
+//         title: d.title,
+//         budget: d.budget,
+//         gross_ww: d.gross_world_wide
+//     }));
+
+//     // Step 4: Set up the chart dimensions and margin
+//     const margin = { top: 20, right: 30, bottom: 40, left: 90 };
+//     const width = 900 - margin.left - margin.right;
+//     const height = 500 - margin.top - margin.bottom;
+
+//     // Step 5: Create the SVG element in the div with id 'chart3'
+//     const svg = d3.select("#chart4")
+//         .append("svg")
+//         .attr("width", width + margin.left + margin.right)
+//         .attr("height", height + margin.top + margin.bottom)
+//         .append("g")
+//         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+//     // Step 6: Set the x and y scales
+//     const x = d3.scaleBand()
+//         .domain(topMoviesByVariation.map(d => d.title))
+//         .range([0, width])
+//         .padding(0.1);
+
+//     const y = d3.scaleLinear()
+//         .domain([0, d3.max(stackedData, d => d.budget + d.gross_ww)])
+//         .nice()
+//         .range([height, 0]);
+
+//     // Step 7: Add the x-axis and y-axis
+//     svg.append("g")
+//         .attr("transform", `translate(0, ${height})`)
+//         .call(d3.axisBottom(x))
+//         .selectAll("text")
+//         .attr("transform", "rotate(-45)")
+//         .style("text-anchor", "end");
+
+//     svg.append("g")
+//         .call(d3.axisLeft(y));
+
+//     // Step 8: Create the bars for the stacked chart
+//     svg.selectAll(".bar-budget")
+//         .data(stackedData)
+//         .enter()
+//         .append("rect")
+//         .attr("class", "bar-budget")
+//         .attr("x", d => x(d.title))
+//         .attr("width", x.bandwidth())
+//         .attr("y", d => y(d.budget))
+//         .attr("height", d => height - y(d.budget))
+//         .attr("fill", "#69b3a2");
+
+//     svg.selectAll(".bar-gross")
+//         .data(stackedData)
+//         .enter()
+//         .append("rect")
+//         .attr("class", "bar-gross")
+//         .attr("x", d => x(d.title))
+//         .attr("width", x.bandwidth())
+//         .attr("y", d => y(d.budget + d.gross_ww))
+//         .attr("height", d => height - y(d.gross_ww))
+//         .attr("fill", "#ff7f0e");
+// }
 
 
 
@@ -271,6 +338,8 @@ function buildBubbleChart(filteredData) {
 function updateDashboard() {
     console.log("Updating dashboard...");
     let filteredData = filterMovies();
+    let groupedData = groupDataByYear(filteredData);
+    console.log("Grouped Data:", groupedData);
     console.log("Filtered Data Inside updateDashboard:", filteredData);
     buildCharts(filteredData);
     buildBubbleChart(filteredData);
