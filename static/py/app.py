@@ -5,8 +5,8 @@ from flask import Flask, jsonify
 from flask_cors import CORS  # Import CORS for handling cross-origin requests
 
 # File paths
-csv_file = "../Data/processed_data.csv"  # Path to your CSV file
-sqlite_file = "../output/imdb_movies.sqlite"  # Path to the SQLite file to be created
+csv_file = "../../Data/processed_data.csv"  # Path to your CSV file
+sqlite_file = "../../Data/imdb_movies.sqlite"  # Path to the SQLite file to be created
 
 # Ensure the CSV file exists
 if not os.path.exists(csv_file):
