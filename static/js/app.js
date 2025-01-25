@@ -110,14 +110,11 @@ function buildCharts(filteredData) {
     // Sort data by gross_ww in descending order for the top 50 movies
     const topMovies = filteredData.sort((a, b) => b.gross_ww - a.gross_ww).slice(0, 50);
 
-    console.log("Top Movies for Treemap:", topMovies);
 
     // Start by giving treemap a hierarchy
     const root = d3.hierarchy({ children: topMovies })
         .sum(d => d.gross_ww)
         .sort((a, b) => b.value - a.value);
-
-    console.log("Root Hierarchy:", root);
 
     // Customize layout
     const treemapLayout = d3.treemap()
@@ -126,8 +123,6 @@ function buildCharts(filteredData) {
 
     // Assign the root hierarchy to the customized layout
     treemapLayout(root);
-
-    console.log("Treemap Leaves:", root.leaves());
 
     // Remove the previous chart
     d3.select("#chart1").selectAll("svg").remove();
@@ -138,16 +133,12 @@ function buildCharts(filteredData) {
         .attr("width", 1500)
         .attr("height", 600);
 
-    console.log("SVG Created");
-
     // creates a new group element to contain the rectangle and the text of each movie
     const nodes = svg.selectAll("g")
         .data(root.leaves())
         .enter()
         .append("g")
         .attr("transform", d => `translate(${d.x0},${d.y0})`);
-
-    console.log("Nodes Data:", nodes.data());
 
     // Make the node rectangular
     nodes.append("rect")
@@ -164,14 +155,127 @@ function buildCharts(filteredData) {
         .attr("fill", "white");
 }
 
-// Update the dashboard when filters change
-function updateDashboard() {
-    let filteredData = filterMovies();
-    console.log(filteredData);
-    console.log("Filtered Data Length:", filteredData.length);
-    console.log("Filtered Data Sample:", filteredData[0]);
-    buildCharts(filteredData);
+//// STOP!!!!!
+function buildBubbleChart(filteredData) {
+    // Log the filtered data to ensure it's being passed correctly
+    console.log("Filtered Data: ", filteredData);
+
+    // Create an object to store the sum of gross_ww for each production company
+    const productionSums = {};
+
+    // Iterate through each data entry and process the production companies
+    filteredData.forEach(d => {
+        // Clean up the production_companies string to convert it into an actual array
+        let companies = [];
+        try {
+            // Clean up the production companies array, removing surrounding quotes and brackets
+            companies = JSON.parse(d.production_companies.replace(/'/g, '"')); // Replace single quotes with double quotes
+        } catch (e) {
+            // If parsing fails, treat it as a single company (this should be rare)
+            companies = [d.production_companies];
+        }
+
+        // Iterate through each company and add the gross_ww to the correct sum
+        companies.forEach(company => {
+            // Ensure the company exists in productionSums, otherwise initialize it with 0
+            if (!productionSums[company]) {
+                productionSums[company] = 0;
+            }
+            productionSums[company] += d.gross_ww;  // Add to the existing sum
+        });
+    });
+
+    // Convert the productionSums object to an array of objects for D3 processing
+    const companyData = Object.entries(productionSums).map(([key, value]) => ({
+        key: key,  // Production company name
+        value: value // Sum of gross_ww
+    }));
+
+    // Sort the production companies by gross_ww value in descending order
+    const top100Companies = companyData.sort((a, b) => b.value - a.value).slice(0, 100);
+
+    // Prepare the hierarchy for the bubble chart using d3.hierarchy
+    const root = d3.hierarchy({children: top100Companies})
+        .sum(d => d.value)  // Use the summed gross_ww as the size of the bubble
+        .sort((a, b) => b.value - a.value);
+
+    // Set up the bubble chart layout
+    const packLayout = d3.pack()
+        .size([800, 800])  // Size of the chart
+        .padding(5);
+    packLayout(root);
+
+    // Remove the previous chart
+    d3.select("#chart3").selectAll("svg").remove();
+
+    // Append a new SVG element to the chart container
+    const svg = d3.select("#chart3")
+        .append("svg")
+        .attr("width", 800)
+        .attr("height", 800)
+        .attr("viewBox", "0 0 800 800")
+        .attr("preserveAspectRatio", "xMidYMid meet");
+
+    // Log the SVG element to confirm it's created correctly
+    console.log("SVG Element: ", svg);
+
+    // Create a scale to adjust the size of the bubbles
+    const sizeScale = d3.scaleSqrt()
+        .domain([0, d3.max(top100Companies, d => d.value)])  // Map the values of gross_ww
+        .range([10, 100]);  // Define the range for the radius of the bubbles (10 to 100)
+
+    // Create a group for each production company (bubble)
+    const node = svg.selectAll("g")
+        .data(root.leaves())
+        .enter()
+        .append("g")
+        .attr("transform", d => `translate(${d.x},${d.y})`);
+
+    // Log the nodes to ensure they're being created
+    console.log("Nodes: ", node);
+
+    // Create the bubbles (circles)
+    node.append("circle")
+        .attr("r", d => sizeScale(d.value))  // Use the scaled radius
+        .attr("fill", "steelblue")
+        .attr("opacity", 0.6);
+
+    // Add text labels inside each bubble
+    node.append("text")
+        .attr("dy", "0.3em")
+        .attr("text-anchor", "middle")
+        .style("fill", "black")
+        .text(d => d.data.key);  // Use the production company name as label
+
+    // Add a title to each bubble
+    node.append("title")
+        .text(d => `${d.data.key}\nGross: $${d.value.toLocaleString()}`);
+
+    // Log the final node to confirm the circles and text are added
+    console.log("Final Node: ", node);
 }
+
+
+
+
+
+// // Update the dashboard when filters change
+// function updateDashboard() {
+//     let filteredData = filterMovies();
+//     console.log(filteredData);
+//     // console.log("Filtered Data Length:", filteredData.length);
+//     // console.log("Filtered Data Sample:", filteredData[0]);
+//     buildCharts(filteredData);
+// }
+
+function updateDashboard() {
+    console.log("Updating dashboard...");
+    let filteredData = filterMovies();
+    console.log("Filtered Data Inside updateDashboard:", filteredData);
+    buildCharts(filteredData);
+    buildBubbleChart(filteredData);
+}
+
 
 // Load movie data and initialize dashboard
 loadMovieData();
