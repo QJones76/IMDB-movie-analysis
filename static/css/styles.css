@@ -68,7 +68,7 @@ body {
 /* Year range slider styling */
 #year-range-slider {
   flex-grow: 1;
-  margin: 0 50px;
+  margin: 10px 50px;
 }
   
 /* Year range text */
@@ -132,9 +132,9 @@ body {
 .chart-containers {
   display: flex;
   flex-direction: column;  
-  gap: 40px;               
-  padding: 20px;
-  width: 95%;           
+  gap: 20px;               
+  padding: 40px;
+  width: 90%;           
 }
 
 /* Container for the top charts */
@@ -155,11 +155,17 @@ body {
 
 /* Style each chart container */
 .chart {        
-  max-width: 1500px;
-  max-height: 1500px;     
   background-color: #f0f0f0;
   border: 1px solid #ccc;    
   border-radius: 8px;         
+}
+
+/* Select all h3 elements */
+h3 {
+  text-align: center;
+  padding: 10px;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 #chart1 {
@@ -168,8 +174,8 @@ body {
 }
 
 #chart2 {
-  height: 800px;
-  width: 800px;
+  height: 600px;
+  width: 300px;
 }
 
 #chart3 {

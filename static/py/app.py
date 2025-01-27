@@ -9,15 +9,15 @@ from flask_cors import CORS  # Import CORS for handling cross-origin requests
 # File paths
 csv_file = "../../Data/processed_data.csv"  # Path to your CSV file
 sqlite_file = "../../Data/imdb_movies.sqlite"  # Path to the SQLite file to be created
-heatmap_json_file = "../../Data/heatmap_data.json" # Path to json file
+# heatmap_json_file = "../../Data/heatmap_data.json" # Path to json file
 
 # Make sure file exist
 if not os.path.exists(csv_file):
     raise FileNotFoundError(f"CSV file '{csv_file}' not found.")
 
 # Make sure file exist
-if not os.path.exists(heatmap_json_file):
-    raise FileNotFoundError(f"Heatmap JSON file '{heatmap_json_file}' not found.")
+# if not os.path.exists(heatmap_json_file):
+#     raise FileNotFoundError(f"Heatmap JSON file '{heatmap_json_file}' not found.")
 
 # Create the output directory if it doesn’t exist
 os.makedirs(os.path.dirname(sqlite_file), exist_ok=True)
@@ -69,15 +69,15 @@ def get_movies():
     movie_data = get_movie_data()
     return jsonify(movie_data)
 
-@app.route('/get-heatmap-data', methods=['GET'])
-def get_heatmap_data():
-    """API endpoint to get heatmap data from JSON file."""
-    try:
-        with open(heatmap_json_file, 'r') as file:
-            heatmap_data = json.load(file)
-        return jsonify(heatmap_data)
-    except Exception as e:
-        return jsonify({"error": f"Could not load heatmap data: {e}"}), 500
+# @app.route('/get-heatmap-data', methods=['GET'])
+# def get_heatmap_data():
+#     """API endpoint to get heatmap data from JSON file."""
+#     try:
+#         with open(heatmap_json_file, 'r') as file:
+#             heatmap_data = json.load(file)
+#         return jsonify(heatmap_data)
+#     except Exception as e:
+#         return jsonify({"error": f"Could not load heatmap data: {e}"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

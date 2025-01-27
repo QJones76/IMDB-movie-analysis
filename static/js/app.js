@@ -142,9 +142,35 @@ function buildCharts(filteredData) {
 
     // Make the node rectangular
     nodes.append("rect")
-        .attr("width", d => d.x1 - d.x0)
-        .attr("height", d => d.y1 - d.y0)
-        .attr("fill", "steelblue");
+    .attr("width", d => d.x1 - d.x0)
+    .attr("height", d => d.y1 - d.y0)
+    .attr("fill", "steelblue")
+    // Add mouse hover tooltip functionality
+    .on("mouseover", function(event, d) {
+        d3.select("#tooltip")
+          .style("visibility", "visible")
+          .html(`<strong>Title:</strong> ${d.data.title}<br>
+                 <strong>Year:</strong> ${d.data.year}<br>
+                 <strong>Gross WW:</strong> $${d.data.gross_ww.toLocaleString()}<br>
+                 <strong>Genres:</strong> ${d.data.genres}`);
+    })
+    .on("mousemove", function(event) {
+        d3.select("#tooltip")
+          .style("top", (event.pageY + 10) + "px")
+          .style("left", (event.pageX + 10) + "px");
+    })
+    .on("mouseout", function() {
+        d3.select("#tooltip").style("visibility", "hidden");
+    });
+
+     // Tooltip container
+     d3.select("body").append("div")
+     .attr("id", "tooltip")
+     .style("position", "absolute")
+     .style("background", "white")
+     .style("border", "1px solid black")
+     .style("padding", "5px")
+     .style("visibility", "hidden");
 
     // Append text element inside each group
     nodes.append("text")
@@ -225,11 +251,24 @@ function buildBubbleChart(filteredData) {
         .append("g")
         .attr("transform", d => `translate(${d.x},${d.y})`);
 
-    // Create the bubbles (circles)
     node.append("circle")
-        .attr("r", d => sizeScale(d.value))  // Use the scaled radius
+        .attr("r", d => sizeScale(d.value))
         .attr("fill", "steelblue")
-        .attr("opacity", 0.6);
+        .attr("opacity", 0.6)
+        .on("mouseover", function(event, d) {
+            d3.select("#tooltip")
+              .style("visibility", "visible")
+              .html(`<strong>Company:</strong> ${d.data.key}<br>
+                     <strong>Gross:</strong> $${d.data.value.toLocaleString()}`);
+        })
+        .on("mousemove", function(event) {
+            d3.select("#tooltip")
+              .style("top", (event.pageY + 10) + "px")
+              .style("left", (event.pageX + 10) + "px");
+        })
+        .on("mouseout", function() {
+            d3.select("#tooltip").style("visibility", "hidden");
+        });
 
     // Add text labels inside each bubble
     node.append("text")
@@ -237,10 +276,6 @@ function buildBubbleChart(filteredData) {
         .attr("text-anchor", "middle")
         .style("fill", "black")
         .text(d => d.data.key);  // Use the production company name as label
-
-    // Add a title to each bubble
-    node.append("title")
-        .text(d => `${d.data.key}\nGross: $${d.value.toLocaleString()}`);
 
 }
 
@@ -338,8 +373,8 @@ function buildBubbleChart(filteredData) {
 function updateDashboard() {
     console.log("Updating dashboard...");
     let filteredData = filterMovies();
-    let groupedData = groupDataByYear(filteredData);
-    console.log("Grouped Data:", groupedData);
+    // let groupedData = groupDataByYear(filteredData);
+    // console.log("Grouped Data:", groupedData);
     console.log("Filtered Data Inside updateDashboard:", filteredData);
     buildCharts(filteredData);
     buildBubbleChart(filteredData);
