@@ -1,97 +1,119 @@
+let movieData = []; // Define movieData in the global scope
+
 // This function is for loading movie data from the csv files and dynamically generating genre checkboxes
-
 function loadMovieData() {
+    // Fetch data from the Flask API endpoints
+    Promise.all([
+        fetch('http://127.0.0.1:5001/get-movies').then(response => response.json()),
+        fetch('http://127.0.0.1:5001/get-heatmap').then(response => response.json())
+    ])
+    .then(([movieDataResponse, heatmapDataResponse]) => {
+        // Process movie data
+        movieData = movieDataResponse.map(d => ({
+            id: d.id,
+            title: d.title,
+            year: +d.year,
+            nominations: +d.nominations,
+            production_companies: d.production_companies,
+            votes: +d.votes,
+            rating: +d.rating,
+            budget: +d.budget,
+            gross_ww: +d.gross_world_wide,
+            gross_us_canada: +d.gross_us_canada,
+            genres: JSON.parse(d.genres.replace(/'/g, '"'))
+        }));
 
-    // Fetch data from the Flask API endpoint
-    fetch('http://127.0.0.1:5001/get-movies')
-        .then(response => response.json())
-        .then(data => {
+        // Extract unique genres, add them to a new set so repeats don't populate, and sort them alphabetically
+        // IMPORTANT: Look into sorting them by their value_counts()
+        let uniqueGenres = [...new Set(movieData.flatMap(movie => movie.genres))].sort();
+        // Look at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_array_literals
+        // for more on the spread syntax (i.e. the '...')
 
-            // This assigns the JSON values to variables 
-            movieData = data.map(d => ({
-                id: d.id,
-                title: d.title,
-                year: +d.year,
-                nominations: +d.nominations,
-                production_companies: d.production_companies,
-                votes: +d.votes,
-                rating: +d.rating,
-                budget: +d.budget,
-                gross_ww: +d.gross_world_wide,
-                gross_us_canada: +d.gross_us_canada,
-                genres: JSON.parse(d.genres.replace(/'/g, '"'))
-            }));
+        // grab the element
+        const genreCheckboxContainer = document.getElementById("genre-checkboxes");
 
-            // Extract unique genres, add them to a new set so repeats don't populate, and sort them alphabetically
-            // IMPORTANT: Look into sorting them by their value_counts()
-            let uniqueGenres = [...new Set(movieData.flatMap(movie => movie.genres))].sort();
-            // Look at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_array_literals
-            // for more on the spread syntax (i.e. the '...')
+        // Clear existing checked boxes
+        genreCheckboxContainer.innerHTML = "";
 
-            // grab the element
-            const genreCheckboxContainer = document.getElementById("genre-checkboxes");
+        // Create a checkbox for each genre by looping through unique genres and adding HTML elements needed
+        // for checkboxes 
+        uniqueGenres.forEach(genre => {
 
-            // Clear existing checked boxes
-            genreCheckboxContainer.innerHTML = "";
+            // Create div element for a checkbox
+            let checkboxWrapper = document.createElement("div");
 
-            // Create a checkbox for each genre by looping through unique genres and adding HTML elements needed
-            // for checkboxes 
-            uniqueGenres.forEach(genre => {
+            // Add a class to div element for css styling
+            checkboxWrapper.classList.add("checkbox-wrapper");
 
-                // Create div element for a checkbox
-                let checkboxWrapper = document.createElement("div");
+            // Create checkbox input element with id, value, and class for css styling
+            let checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.id = genre;
+            checkbox.value = genre;
+            checkbox.classList.add("genre-checkbox");
 
-                // Add a class to div element for css styling
-                checkboxWrapper.classList.add("checkbox-wrapper");
+            // Create corresponding label for each unique genre
+            let label = document.createElement("label");
+            label.setAttribute("for", genre);
 
-                // Create checkbox input element with id, value, and class for css styling
-                let checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.id = genre;
-                checkbox.value = genre;
-                checkbox.classList.add("genre-checkbox");
+            // Add text content for current genre
+            label.textContent = genre;
 
-                // Create corresponding label for each unique genre
-                let label = document.createElement("label");
-                label.setAttribute("for", genre);
-
-                // Add text content for current genre
-                label.textContent = genre;
-
-                // Append all created HTML elements to correct parent elements
-                checkboxWrapper.appendChild(checkbox);
-                checkboxWrapper.appendChild(label);
-                genreCheckboxContainer.appendChild(checkboxWrapper);
-            });
-
-            // Create an event listener to update the dashboard upon checkbox changes
-            const checkboxes = document.querySelectorAll(".genre-checkbox");
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener("change", updateDashboard);
-            });
-
-            // Create an event listener to update the dashboard upon slider changes
-            slider.noUiSlider.on("update", function() {
-                updateDashboard();
-            });
-
-            // Initialize the dashboard upon succefully getting data
-            updateDashboard();
-
-            // Assign global variable after data is loaded
-            window.filteredData = filterMovies();
-        })
-
-        // Add a condition to catch data fetching errors
-        .catch(error => {
-            console.error("Error fetching movie data:", error);
+            // Append all created HTML elements to correct parent elements
+            checkboxWrapper.appendChild(checkbox);
+            checkboxWrapper.appendChild(label);
+            genreCheckboxContainer.appendChild(checkboxWrapper);
         });
+
+        // Create an event listener to update the dashboard upon checkbox changes
+        const checkboxes = document.querySelectorAll(".genre-checkbox");
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", updateDashboard);
+        });
+
+        // Create an event listener to update the dashboard upon slider changes
+        slider.noUiSlider.on("update", function() {
+            updateDashboard();
+        });
+
+        // Initialize the dashboard upon successfully getting data
+        updateDashboard();
+
+        // Assign global variable after data is loaded
+        window.filteredData = filterMovies();
+
+        // Process heatmap data
+        const heatmapData = heatmapDataResponse;
+        console.log("Heatmap Data:", heatmapData);
+
+        // Build heatmap
+        buildHeatmap(heatmapData);
+    })
+    // Add a condition to catch data fetching errors
+    .catch(error => {
+        console.error("Error fetching data:", error);
+    });
 }
 
+// Add custom color scale for charts
+const colors = [
+    "#D95F02", // orange
+    "#7570B3", // purple
+    "#E7298A", // pink
+    "#66A51E", // green vibrant
+    "#E6AB02", // piss-yellow
+    "#1B9E77", // teal green
+    "#B07AA1", // muted lavender
+    "#DC863B", // burnt orange
+    "#6A3D9A", // deep purple
+    "#BC80BD", // soft mauve
+    "#8DD3C7", // mint green
+    "#FDB462", // apricot orange
+    "#80B1D3"  // sky blue
+];
 
 // Get selected genres from checkboxes
 function getFilterValues() {
-    
     // Get the year values from the noUiSlider
     // The .map(Number) converts the values in the array to numbers
     let yearRange = slider.noUiSlider.get().map(Number);
@@ -105,7 +127,6 @@ function getFilterValues() {
 
 // Filter movies based on selected genres and year range
 function filterMovies() {
-
     // Retrieve the filter values to use on movie dataset
     const { yearMin, yearMax, genres } = getFilterValues();
 
@@ -115,7 +136,7 @@ function filterMovies() {
         // Handle the case where no genres are selected
         (genres.length === 0 || genres.some(genre => movie.genres.includes(genre)))
     );
-    // Return new filterd data
+    // Return new filtered data
     return filtered;
 }
 
@@ -123,7 +144,6 @@ function filterMovies() {
 
 // Build Quinn's treemap
 function buildTreemap(filteredData) {
-
     // Sort data by gross_ww in descending order for the top 50 movies
     const topMovies = filteredData.sort((a, b) => b.gross_ww - a.gross_ww).slice(0, 50);
 
@@ -160,7 +180,7 @@ function buildTreemap(filteredData) {
     nodes.append("rect")
     .attr("width", d => d.x1 - d.x0)
     .attr("height", d => d.y1 - d.y0)
-    .attr("fill", "steelblue")
+    .attr("fill", (d, i) => colors[i % colors.length])
     // Add event listener for mouse hover tooltip functionality
     .on("mouseover", function(event, d) {
         d3.select("#tooltip")
@@ -175,7 +195,7 @@ function buildTreemap(filteredData) {
           .style("top", (event.pageY + 10) + "px")
           .style("left", (event.pageX + 10) + "px");
     })
-    // Add event listener for if the mouse isn't currently on a element
+    // Add event listener for if the mouse isn't currently on an element
     .on("mouseout", function() {
         d3.select("#tooltip").style("visibility", "hidden");
     });
@@ -205,27 +225,57 @@ function buildBubbleChart(filteredData) {
 
     // Iterate through each data entry and process the production companies
     filteredData.forEach(d => {
-    
         let companies = [];
         try {
-            // Replace the single quotes with double quotes to follow JS string format
-            companies = JSON.parse(d.production_companies.replace(/'/g, '"'));
+            // First attempt: Handle the case where production companies are enclosed in backticks
+            let cleanedString = d.production_companies;
+
+            // Check if the string is enclosed in backticks and remove them
+            if (cleanedString.startsWith('`') && cleanedString.endsWith('`')) {
+                cleanedString = cleanedString.slice(1, -1); // Remove backticks
+            }
+
+            // Now handle the rest of the string as before, replacing quotes and parsing
+            companies = JSON.parse(
+                cleanedString
+                    .replace(/'/g, '"')                       // Replace single quotes with double quotes
+                    .replace(/\\"/g, "'")                     // Replace escaped double quotes with single quotes
+                    .replace(/"(?=\w+['’]\w+)/g, match => match.replace('"', "'")) // Adjust double quotes for nested single quotes
+            );
         } catch (e1) {
             try {
-                // Additional layer to catch the backticks in some of the arrays
+                // Second attempt: Replace backticks and other formatting issues
                 let cleanedString = d.production_companies.replace(/`/g, '"');
                 
-                // Replace single quotes with double quotes, but not those already inside double quotes
                 if (cleanedString.includes("'") && !cleanedString.includes('"')) {
                     cleanedString = cleanedString.replace(/'(?![^"]*")/g, '"'); // Replace single quotes outside double quotes
                 }
-
-                // Attempt to parse the cleaned string
+    
                 companies = JSON.parse(cleanedString);
-
             } catch (e2) {
-                // If all else fails, treat the entire string as a single company
-                companies = [d.production_companies];
+                try {
+                    // Third attempt: Handle mixed quotes specifically for your case
+                    let adjustedString = d.production_companies
+                        .replace(/'/g, '"') // Replace all single quotes with double quotes
+                        .replace(/"\\"/g, "'") // Replace escaped double quotes inside quotes
+                        .replace(/""/g, '"') // Fix double double quotes
+                        .replace(/\\"/g, "'"); // Replace escaped double quotes with single quotes
+    
+                    companies = JSON.parse(adjustedString);
+                } catch (e3) {
+                    try {
+                        // Fourth attempt: Handle mixed quotes with different approach
+                        let mixedQuotesString = d.production_companies
+                            .replace(/'/g, '"') // Replace all single quotes with double quotes
+                            .replace(/"(?=\w+['’]\w+)/g, match => match.replace('"', "'")) // Adjust double quotes for nested single quotes
+                            .replace(/""/g, '"'); // Fix double double quotes
+                        
+                        companies = JSON.parse(mixedQuotesString);
+                    } catch (e4) {
+                        // If all else fails, treat the entire string as a single company
+                        companies = [d.production_companies];
+                    }
+                }
             }
         }
 
@@ -292,7 +342,7 @@ function buildBubbleChart(filteredData) {
     // Add the bubbles
     node.append("circle")
         .attr("r", d => sizeScale(d.value))
-        .attr("fill", "steelblue")
+        .attr("fill", (d, i) => colors[i % colors.length])
         .attr("opacity", 0.6)
         .on("mouseover", function(event, d) {
             // Add tooltip functionality
@@ -321,14 +371,108 @@ function buildBubbleChart(filteredData) {
         .text(d => d.data.key);  
 }
 
+
+// Build Nicholas' heatmap
+function calculateCorrelationMatrix(data, columns) {
+    function pearsonCorrelation(x, y) {
+        const meanX = d3.mean(x);
+        const meanY = d3.mean(y);
+        const numerator = d3.sum(x.map((xi, i) => (xi - meanX) * (y[i] - meanY)));
+        const denominator = Math.sqrt(
+            d3.sum(x.map(xi => Math.pow(xi - meanX, 2))) *
+            d3.sum(y.map(yi => Math.pow(yi - meanY, 2)))
+        );
+        return numerator / denominator;
+    }
+
+    const matrix = [];
+    for (let i = 0; i < columns.length; i++) {
+        for (let j = 0; j < columns.length; j++) {
+            const x = data.map(d => d[columns[i]]);
+            const y = data.map(d => d[columns[j]]);
+            matrix.push({
+                row: i,
+                col: j,
+                value: pearsonCorrelation(x, y)
+            });
+        }
+    }
+    return matrix;
+}
+
+// Function to build heatmap using D3
+function buildHeatmap(data) {
+    const margin = { top: 0, right: 0, bottom: 50, left: 50 };
+    const width = 800 - margin.left - margin.right;
+    const height = 800 - margin.top - margin.bottom;
+
+    // Define the columns you want to visualize
+    const columns = ["avg_rating_change", "budget_change", "gross_us_change", "gross_world_change", "nominations_change", "oscars_change", "votes_change"];
+    
+    // Calculate the correlation matrix
+    const heatmapData = calculateCorrelationMatrix(data, columns);
+
+    // Remove any existing heatmap
+    d3.select("#chart4").selectAll("svg").remove();
+
+    // Append new SVG element for heatmap
+    const svg = d3.select("#chart4")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleBand()
+        .range([0, width])
+        .domain(columns)
+        .padding(0.01);
+
+    const y = d3.scaleBand()
+        .range([height, 0])
+        .domain(columns)
+        .padding(0.01);
+
+    // Define custom color interpolator for blue-white-red
+    const interpolateBuWeRd = t => {
+        if (t < 0.5) {
+            return d3.interpolateBlues(2 * t);
+        } else {
+            return d3.interpolateReds(2 * (t - 0.5));
+        }
+    };
+
+    const colorScale = d3.scaleSequential()
+        .interpolator(interpolateBuWeRd)
+        .domain([-1, 1]); // Correlation ranges from -1 to 1
+
+    svg.selectAll()
+        .data(heatmapData)
+        .enter()
+        .append("rect")
+        .attr("x", d => x(columns[d.col]))
+        .attr("y", d => y(columns[d.row]))
+        .attr("width", x.bandwidth())
+        .attr("height", y.bandwidth())
+        .style("fill", d => colorScale(d.value))
+        .append("title") // Tooltip to show the correlation value
+        .text(d => d.value.toFixed(2));
+
+    svg.append("g")
+        .attr("transform", `translate(0, ${height})`)
+        .call(d3.axisBottom(x));
+
+    svg.append("g")
+        .call(d3.axisLeft(y));
+}
+
 function updateDashboard() {
     console.log("Updating dashboard...");
     let filteredData = filterMovies();
     console.log("Filtered Data Inside updateDashboard:", filteredData);
-    buildCharts(filteredData);
+    buildTreemap(filteredData);
     buildBubbleChart(filteredData);
 }
-
 
 // Load movie data and initialize dashboard
 loadMovieData();
