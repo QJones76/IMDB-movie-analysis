@@ -18,6 +18,7 @@ body {
   
 /* Top section of the page (title + filters) */
 .top-of-page {
+  position: fixed; /* locks the top of page to the top */
   width: 100%;
   height: 20vh; 
   background-color: #fff;
@@ -26,6 +27,10 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+section {
+  margin-top: 20vh; /* Add space to the section element so charts show even with the locked top of page */
 }
   
 /* Page title styling */
@@ -157,7 +162,7 @@ body {
 .chart {        
   background-color: #f0f0f0;
   border: 1px solid #ccc;    
-  border-radius: 8px;         
+  border-radius: 0px 0px 8px 8px;         
 }
 
 /* Select all h3 elements */
@@ -170,12 +175,12 @@ h3 {
 
 #chart1 {
   height: 600px;
-  width: 1500px;
+  width: 1200px;
 }
 
 #chart2 {
   height: 600px;
-  width: 300px;
+  width: 500px;
 }
 
 #chart3 {
