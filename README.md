@@ -5,19 +5,30 @@
 ---
 
 #### Processing the Data:
+We took [this public dataset](https://www.kaggle.com/datasets/raedaddala/top-500-600-movies-of-each-year-from-1960-to-2024) from Kaggle and downloaded the csv provided. We named this file "unprocessed_data.csv" in our "Data" folder. Then, inside of the jupyter notebook named "processing_data.ipynb", we inspected, cleaned, and re-ordered the data for our goals. We then exported that data into a new csv file named, "processed_data.csv". 
 
-We took [this public dataset]([https://www.kaggle.com/datasets/raedaddala/top-500-600-movies-of-each-year-from-1960-to-2024](https://www.kaggle.com/datasets/raedaddala/top-500-600-movies-of-each-year-from-1960-to-2024)) from Kaggle and downloaded the csv provided. We named this file "unprocessed_data.csv" in our "Data" folder. Then, inside of the jupyter notebook named "processing_data.ipynb", we inspected, cleaned, and re-ordered the data for our goals. We then exported that data into a new csv file named, "processed_data.csv".
+Storing the Data:
+After we had a cleaned dataset, we imported the data into a sqlite database file. Then we created a [flask](https://pypi.org/project/Flask/) app that runs on a local server to access the database and return specific API endpoints. This was all done inside the app.py file. You will need to follow these steps if your cloning the repository for your own exploration. First, open a command-line interface. Follow the instructions to set up a [Conda environment](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) and activate your new environment. Then install all the python libraries we used in the project by typing: 
+```
+pip install -r /path/to/requirements.txt
+```
+After your environment is set up, you can run the flask API file. Navigate to the app.py file while still in the command-line interface. If you are one windows, launch the file by typing:
+```
+python.exe app.py
+```
+Or, if you are on a mac os system, type:
+```
+python3 app.py
+```
+This will launch the flask app on the local server port 5001. 
 
 Building the Dashboard:
-After we had our dataset cleaned for our purposes, we needed to store it in a .sqlite file for easy retrieval of JSON data using [Flask]([https://pypi.org/project/Flask/)&#39;s](https://pypi.org/project/Flask/)'s) API endpoints. We accomplish both of these in the app.py file in the 'static/py' folder. This file converts the processed csv into a SQLite database file. Then, with the Flask API endpoint, we return JSON data for easy parsing in our "app.js" file.
-
+With our data retrieval system set up, we then had to build both the front and back end code for our dashboard. 
 ##### front end:
-
 Our "index.html' and "styles.css" is where all of the front-end creation of HTML elements and their styling are stored.
 
 ##### back end:
-
-Inside our "app.js" file is where we created functions to run our filtering of the data with user interaction and building the charts in our dashboard. The order of our functions follow this structure: fetching the data, dynamically adding filter elements, and adding event listeners for those elements; grabbing the filtered values; using those values to filter the entire dataset; building the treemap, chart2, chart3, and chart4; creating a function that updates the dashboard; and, finally, initializing the dashboard.
+Inside our "app.js" file is where we created functions to run our filtering of the data with user interaction and building the charts in our dashboard. The order of our functions follow this structure: fetching the data, dynamically adding filter elements, and adding event listeners for those elements; grabbing the filtered values; using those values to filter the entire dataset; building the treemap chart, the Fun Facts section, the bubble chart, and a static correlation coefficient heatmap; creating a function that updates the dashboard; and, finally, initializing the dashboard.
 
 
 ---
