@@ -42,8 +42,16 @@ Inside our "app.js" file is where we created functions to run our filtering of t
 ---
 
 ## Citations
+---
 
-We used [these docs]([https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_array_literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_array_literals)) to understand the spread syntax for automatically populating the genres selection boxWe used the [new operator]([https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new)) along with the [Set() constructor]([https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/Set)) to help iterate through the genres and remove repeating genres for our genre selection boxWe used the [classList property]([https://developer.mozilla.org/en-US/docs/Web/API/Element/classList](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList)) to help add HTML elements to our index.html dynamically in JavaScript.We used the [appendChild() method]([https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild](https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild)) to append dynamically produced HTML elements to proper parent elementsWe used the [noUiSlider]([https://refreshless.com/nouislider/](https://refreshless.com/nouislider/)), which was a new JS library we discovered that produced the slider for our year range selector
+- We used [these docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_array_literals) to understand the spread syntax for automatically populating the genres selection box
+- We used the [new operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new) along with the [Set() constructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/Set) to help iterate through the genres and remove repeating genres for our genre selection box
+- We used the [classList property](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList) to help add HTML elements to our index.html dynamically in JavaScript.
+- We used the [appendChild() method](https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild) to append dynamically produced HTML elements to proper parent elements
+- We used the [noUiSlider](https://refreshless.com/nouislider/), which was a new JS library we discovered that produced the slider for our year range selector
+- We used the [try...catch](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch) statement to parse the movie production companies.
+- We used the [replace](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace) method to replace characters in array for parsing. Both the [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions) and the [assertions guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Assertions) were helpful in this endeavor. 
+
 
 Slideshow:
 Altman, R. (Director). (1992). *The Player* [Film]. Avenue Pictures Productions.
