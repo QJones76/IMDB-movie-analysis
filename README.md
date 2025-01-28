@@ -54,11 +54,11 @@ Inside our "app.js" file is where we created functions to run our filtering of t
 
 
 Slideshow:
-Altman, R. (Director). (1992). *The Player* [Film]. Avenue Pictures Productions.
-Tarantino, Q. (Director). (2019). *Once Upon a Time in Hollywood* [Film]. Columbia Pictures, Heyday Films, Bona Film Group, Visiona Romantica.
-Guest, C. (Director). (1989). *The Big Picture* [Film]. Columbia Pictures.
-Jonze, S. (Director). (2002). *Adaptation* [Film]. Beverly Detroit, Clinica Estetico, Good Machine, and Intermedia Films.
-Sonnenfeld, B. (Director). (1995). *Get Shorty* [Film]. Metro-Goldwyn-Mayer.
-Guest, C. (Director). (2006). *For Your Consideration* [Film]. Castle Rock Entertainment, Shangri-La Entertainment, and HBO Films.
-Goddard, J., Houseman, J. (Producers), & Minnelli, V. (Director). (1952). *The Bad and the Beautiful* [Film]. Metro-Goldwyn-Mayer.
-Chazelle, D. (Director). (2016). *La La Land* [Film]. Summit Entertainment, Marc Platt Productions, and Black Label Media.
+- Altman, R. (Director). (1992). *The Player* [Film]. Avenue Pictures Productions.
+- Tarantino, Q. (Director). (2019). *Once Upon a Time in Hollywood* [Film]. Columbia Pictures, Heyday Films, Bona Film Group, Visiona Romantica.
+- Guest, C. (Director). (1989). *The Big Picture* [Film]. Columbia Pictures.
+- Jonze, S. (Director). (2002). *Adaptation* [Film]. Beverly Detroit, Clinica Estetico, Good Machine, and Intermedia Films.
+- Sonnenfeld, B. (Director). (1995). *Get Shorty* [Film]. Metro-Goldwyn-Mayer.
+- Guest, C. (Director). (2006). *For Your Consideration* [Film]. Castle Rock Entertainment, Shangri-La Entertainment, and HBO Films.
+- Goddard, J., Houseman, J. (Producers), & Minnelli, V. (Director). (1952). *The Bad and the Beautiful* [Film]. Metro-Goldwyn-Mayer.
+- Chazelle, D. (Director). (2016). *La La Land* [Film]. Summit Entertainment, Marc Platt Productions, and Black Label Media.
