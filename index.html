@@ -37,15 +37,35 @@
   <!-- Main content area for charts -->
   <section class="chart-containers">
     <div class="top_charts">
-        <div class="chart" id="chart1"></div>
-        <div class="chart" id="chart2"></div>
+        <div class="chart-container">
+          <div class="chart-header">
+            <h3>Top 50 Movies by Gross Earnings Worldwide</h3>
+            <div class="chart" id="chart1"></div>
+          </div>
+        </div>
+        <div class="chart-container">
+          <div class="chart-header">
+            <h3>FUN FACTS</h3>
+            <div class="chart" id="chart2"></div>
+          </div>
+        </div>
+    </div>
+    <div class="bottom_charts">
+      <div class="chart-container">
+        <div class="chart-header">
+          <h3>Top 100 Production Companies by Gross Earnings Worldwide</h3>
+          <div class="chart" id="chart3"></div>
+        </div>
       </div>
-      <div class="bottom_charts">
-        <div class="chart" id="chart3"></div>
-        <div class="chart" id="chart4"></div>
+      <div class="chart-container">
+        <div class="chart-header">
+          <h3>Static Correlation Coefficient Heatmap</h3>
+          <div class="chart" id="chart4"></div>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- Implementing noUiSlider -->
   <script src="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.js"></script>
