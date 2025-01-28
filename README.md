@@ -44,7 +44,7 @@ Inside our "app.js" file is where we created functions to run our filtering of t
 ## Citations
 ---
 
-- We used [these docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_array_literals) to understand the spread syntax for automatically populating the genres selection box
+- We used [these docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_array_literals) to understand the spread syntax which helped in automatically populating the genres selection box from the dataset itself
 - We used the [new operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new) along with the [Set() constructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/Set) to help iterate through the genres and remove repeating genres for our genre selection box
 - We used the [classList property](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList) to help add HTML elements to our index.html dynamically in JavaScript.
 - We used the [appendChild() method](https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild) to append dynamically produced HTML elements to proper parent elements
