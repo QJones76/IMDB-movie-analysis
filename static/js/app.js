@@ -502,7 +502,7 @@ function calculateCorrelationMatrix(data, columns) {
 
 // Function to build heatmap using D3
 function buildHeatmap(data) {
-    const margin = { top: 0, right: 0, bottom: 50, left: 50 };
+    const margin = { top: 30, right: 30, bottom: 150, left: 125 };
     const width = 800 - margin.left - margin.right;
     const height = 800 - margin.top - margin.bottom;
 
@@ -519,7 +519,7 @@ function buildHeatmap(data) {
     const svg = d3.select("#chart4")
         .append("svg")
         .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("height", height + margin.top + margin.bottom + 50) // Extra space for the legend
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -546,6 +546,18 @@ function buildHeatmap(data) {
         .interpolator(interpolateBuWeRd)
         .domain([-1, 1]); // Correlation ranges from -1 to 1
 
+    // Create the SVG tooltip (outside the loop)
+    const tooltip = d3.select("body")
+        .append("div")
+        .style("position", "absolute")
+        .style("background", "white")
+        .style("border", "1px solid black")
+        .style("padding", "5px")
+        .style("border-radius", "5px")
+        .style("pointer-events", "none") // Prevent it from blocking mouse events
+        .style("display", "none");
+
+    // Draw heatmap cells
     svg.selectAll()
         .data(heatmapData)
         .enter()
@@ -555,15 +567,79 @@ function buildHeatmap(data) {
         .attr("width", x.bandwidth())
         .attr("height", y.bandwidth())
         .style("fill", d => colorScale(d.value))
-        .append("title") // Tooltip to show the correlation value
-        .text(d => d.value.toFixed(2));
+        .on("mouseover", (event, d) => {
+          tooltip
+            .style("display", "block")
+            .html(`<strong>Value:</strong> ${d.value.toFixed(2)}`)
+            .style("left", `${event.pageX + 10}px`)
+            .style("top", `${event.pageY + 10}px`);
+        })
+        .on("mousemove", (event) => {
+          tooltip
+            .style("left", `${event.pageX + 10}px`)
+            .style("top", `${event.pageY + 10}px`);
+        })
+        .on("mouseout", () => {
+          tooltip.style("display", "none");
+        });
 
+    // Add x-axis
     svg.append("g")
         .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x))
+        .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("transform", "rotate(-45)");
 
+    // Add y-axis
     svg.append("g")
         .call(d3.axisLeft(y));
+
+    // --- Add Legend ---
+    const legendWidth = 300;
+    const legendHeight = 20;
+
+    // Append a group for the legend
+    const legend = svg.append("g")
+        .attr("transform", `translate(${(width - legendWidth) / 2}, ${height + 90})`);
+
+    // Create a gradient for the legend
+    const defs = svg.append("defs");
+    const linearGradient = defs.append("linearGradient")
+        .attr("id", "heatmap-gradient");
+
+    linearGradient.append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", "#000435");
+
+    linearGradient.append("stop")
+        .attr("offset", "50%")
+        .attr("stop-color", "white");
+
+    linearGradient.append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", "#610000");
+
+    // Draw the rectangle for the legend
+    legend.append("rect")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", legendWidth)
+        .attr("height", legendHeight)
+        .style("fill", "url(#heatmap-gradient)");
+
+    // Add legend axis
+    const legendScale = d3.scaleLinear()
+        .domain([-1, 1]) // Match the colorScale domain
+        .range([0, legendWidth]);
+
+    const legendAxis = d3.axisBottom(legendScale)
+        .ticks(5)
+        .tickFormat(d3.format(".1f"));
+
+    legend.append("g")
+        .attr("transform", `translate(0, ${legendHeight})`)
+        .call(legendAxis);
 }
 
 function updateDashboard() {

@@ -30,7 +30,8 @@ Our "index.html' and "styles.css" is where all of the front-end creation of HTML
 ##### back end:
 Inside our "app.js" file is where we created functions to run our filtering of the data with user interaction and building the charts in our dashboard. The order of our functions follow this structure: fetching the data, dynamically adding filter elements, and adding event listeners for those elements; grabbing the filtered values; using those values to filter the entire dataset; building the treemap chart, the Fun Facts section, the bubble chart, and a static correlation coefficient heatmap; creating a function that updates the dashboard; and, finally, initializing the dashboard.
 
-For more information about how to interpret correlation heatmaps, please refer to this reference document: [Guide to Interpreting Heatmaps](IMDB-movie-analysis/correlation_guide.md)
+For more information about how to interpret correlation heatmaps, please refer to this reference document: [Guide to Interpreting Heatmaps](https://github.com/QJones76/IMDB-movie-analysis/issues/8#issue-2817119843)
+
 ---
 
 ## References
@@ -50,8 +51,10 @@ For more information about how to interpret correlation heatmaps, please refer t
 - We used the [appendChild() method](https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild) to append dynamically produced HTML elements to proper parent elements
 - We used the [noUiSlider](https://refreshless.com/nouislider/), which was a new JS library we discovered that produced the slider for our year range selector
 - We used the [try...catch](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch) statement to parse the movie production companies.
-- We used the [replace](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace) method to replace characters in array for parsing. Both the [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions) and the [assertions guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Assertions) were helpful in this endeavor. 
-
+- We used the [replace](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace) method to replace characters in array for parsing. Both the [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions) and the [assertions guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Assertions) were helpful in this endeavor.
+- we used the [reduce]() method to help calculate the fun facts section. This combined with the [conditional (ternary) operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator) and arrow functions were helpful in keeping the code concise.
+- We used the d3-textwrap function, which can be found [here](https://www.npmjs.com/package/d3-textwrap?activeTab=readme) or you can visit their [GitHub](https://github.com/vijithassar/d3-textwrap) repository that holds the code, in association with [chatGPT](https://chatgpt.com/) to add text wrap functionality to the treemap.
+- Finally, consulting [chatGPT](https://chatgpt.com/) was extremely helpful in styling our noUiSlider and checkbox elements.
 
 Slideshow:
 - Altman, R. (Director). (1992). *The Player* [Film]. Avenue Pictures Productions.
