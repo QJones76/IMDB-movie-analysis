@@ -264,24 +264,64 @@ function updateFunFacts(filteredData) {
 
     // Create a fun facts section
     const funFactsHTML = `
-    <div style="font-size:24px;">
+    <div style="font-size:18px";>
         <div class="fact1">
             <p><strong>The Highest Rated</strong> movie of the selected fields is <strong>${highestRated.title}</strong> with an IMDB rating of <strong>${highestRated.rating}</strong>.</p>
+            <br>
         </div>
         <div class="fact2">
             <p><strong>The Lowest Rated</strong> movie of the selected fields is <strong>${lowestRated.title}</strong> with an IMDB rating of <strong>${lowestRated.rating}</strong>.</p>
+            <br>
         </div>
         <div class="fact3">
             <p><strong>The Most Nominated</strong> movie of the selected fields is <strong>${mostNominations.title}</strong>, receiving <strong>${mostNominations.nominations}</strong> nominations!</p>
+            <br>
         </div>
         <div class="fact4">
             <p><strong>${highestUsAndCanada.title}</strong> earned the most in US and Canadian markets. They earned <strong>$${highestUsAndCanada.gross_us_canada}</strong> total!</p>
+            <br>
         </div>
         <div class="fact5">
             <p><strong>${highestWW.title}</strong> earned the most in the world wide market. They earned <strong>$${highestWW.gross_ww}.</strong></p>
+            <br>
         </div>
         <div class="fact6">
             <p><strong>${lowestBudget.title}</strong> had the lowest budget. They only had <strong>$${lowestBudget.budget}</strong> to work with</p>
+            <br>
+        </div>
+        <div class="static-facts_divider">
+            <p>________________________________________________________</p>
+        </div>
+        <div class="static_facts" "text-align:center";>
+            <p><strong>Wonder Nuggets</strong></p>
+            <br>
+        <div class="fact7">
+            <p>Disney turned down "Back to the Future" because they thought Marty had a bit of an Oedipus vibe with his mom.</p>
+            <br>
+        </div>
+        <div class="fact8">
+            <p> The tarantula from Home Alone was named Barry.</p>
+            <br>
+        </div>
+        <div class="fact9">
+            <p> The sound of the velociraptors communicating in Jurassic Park is actually the sound of tortoises mating.</p>
+            <br>
+        </div>
+        <div class="fact10">
+            <p> Katharine Hepburn holds the record for the most individual Oscar wins at 4 - all of them in the Best Actress category.</p>
+            <br>
+        </div>
+        <div class="fact11">
+            <p> Sylvester Stallone holds the record for the most Razzie awards with 12 wins and 40 nominations.</p>
+            <br>
+        </div>
+        <div class="fact12">
+            <p> There are 116 f-bombs in Deadpool & Wolverine.</p>
+            <br>
+        </div>
+        <div class="fact13">
+            <p><strong>Pulp Fiction</strong> had an $8 million budget and grossed over $200 million at the box office.</p>
+            <br>
         </div>
     </div>
 `;
@@ -475,7 +515,7 @@ function calculateCorrelationMatrix(data, columns) {
 
 // Function to build heatmap using D3
 function buildHeatmap(data) {
-    const margin = { top: 0, right: 0, bottom: 50, left: 50 };
+    const margin = { top: 30, right: 30, bottom: 150, left: 125 };
     const width = 800 - margin.left - margin.right;
     const height = 800 - margin.top - margin.bottom;
 
@@ -492,7 +532,7 @@ function buildHeatmap(data) {
     const svg = d3.select("#chart4")
         .append("svg")
         .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("height", height + margin.top + margin.bottom + 50) // Extra space for the legend
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -519,6 +559,18 @@ function buildHeatmap(data) {
         .interpolator(interpolateBuWeRd)
         .domain([-1, 1]); // Correlation ranges from -1 to 1
 
+    // Create the SVG tooltip (outside the loop)
+    const tooltip = d3.select("body")
+        .append("div")
+        .style("position", "absolute")
+        .style("background", "white")
+        .style("border", "1px solid black")
+        .style("padding", "5px")
+        .style("border-radius", "5px")
+        .style("pointer-events", "none") // Prevent it from blocking mouse events
+        .style("display", "none");
+
+    // Draw heatmap cells
     svg.selectAll()
         .data(heatmapData)
         .enter()
@@ -528,15 +580,79 @@ function buildHeatmap(data) {
         .attr("width", x.bandwidth())
         .attr("height", y.bandwidth())
         .style("fill", d => colorScale(d.value))
-        .append("title") // Tooltip to show the correlation value
-        .text(d => d.value.toFixed(2));
+        .on("mouseover", (event, d) => {
+          tooltip
+            .style("display", "block")
+            .html(`<strong>Value:</strong> ${d.value.toFixed(2)}`)
+            .style("left", `${event.pageX + 10}px`)
+            .style("top", `${event.pageY + 10}px`);
+        })
+        .on("mousemove", (event) => {
+          tooltip
+            .style("left", `${event.pageX + 10}px`)
+            .style("top", `${event.pageY + 10}px`);
+        })
+        .on("mouseout", () => {
+          tooltip.style("display", "none");
+        });
 
+    // Add x-axis
     svg.append("g")
         .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x))
+        .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("transform", "rotate(-45)");
 
+    // Add y-axis
     svg.append("g")
         .call(d3.axisLeft(y));
+
+    // --- Add Legend ---
+    const legendWidth = 300;
+    const legendHeight = 20;
+
+    // Append a group for the legend
+    const legend = svg.append("g")
+        .attr("transform", `translate(${(width - legendWidth) / 2}, ${height + 90})`);
+
+    // Create a gradient for the legend
+    const defs = svg.append("defs");
+    const linearGradient = defs.append("linearGradient")
+        .attr("id", "heatmap-gradient");
+
+    linearGradient.append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", "#000435");
+
+    linearGradient.append("stop")
+        .attr("offset", "50%")
+        .attr("stop-color", "white");
+
+    linearGradient.append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", "#610000");
+
+    // Draw the rectangle for the legend
+    legend.append("rect")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", legendWidth)
+        .attr("height", legendHeight)
+        .style("fill", "url(#heatmap-gradient)");
+
+    // Add legend axis
+    const legendScale = d3.scaleLinear()
+        .domain([-1, 1]) // Match the colorScale domain
+        .range([0, legendWidth]);
+
+    const legendAxis = d3.axisBottom(legendScale)
+        .ticks(5)
+        .tickFormat(d3.format(".1f"));
+
+    legend.append("g")
+        .attr("transform", `translate(0, ${legendHeight})`)
+        .call(legendAxis);
 }
 
 function updateDashboard() {
