@@ -52,7 +52,8 @@ For more information about how to interpret correlation heatmaps, please refer t
 - We used the [noUiSlider](https://refreshless.com/nouislider/), which was a new JS library we discovered that produced the slider for our year range selector
 - We used the [try...catch](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch) statement to parse the movie production companies.
 - We used the [replace](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace) method to replace characters in array for parsing. Both the [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions) and the [assertions guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Assertions) were helpful in this endeavor. 
-
+- We used the d3-textwrap function, which can be found [here](https://www.npmjs.com/package/d3-textwrap?activeTab=readme) or you can visit their [GitHub](https://github.com/vijithassar/d3-textwrap) repository that holds the code, in association with [chatGPT](https://chatgpt.com/) to add text wrap functionality to the treemap.
+- Finally, [chatGPT](https://chatgpt.com/) was extremely helpful in styling our noUiSlider and checkbox elements.
 
 Slideshow:
 - Altman, R. (Director). (1992). *The Player* [Film]. Avenue Pictures Productions.
