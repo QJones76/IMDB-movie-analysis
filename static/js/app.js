@@ -251,24 +251,64 @@ function updateFunFacts(filteredData) {
 
     // Create a fun facts section
     const funFactsHTML = `
-    <div style="font-size:24px;">
+    <div style="font-size:18px";>
         <div class="fact1">
             <p><strong>The Highest Rated</strong> movie of the selected fields is <strong>${highestRated.title}</strong> with an IMDB rating of <strong>${highestRated.rating}</strong>.</p>
+            <br>
         </div>
         <div class="fact2">
             <p><strong>The Lowest Rated</strong> movie of the selected fields is <strong>${lowestRated.title}</strong> with an IMDB rating of <strong>${lowestRated.rating}</strong>.</p>
+            <br>
         </div>
         <div class="fact3">
             <p><strong>The Most Nominated</strong> movie of the selected fields is <strong>${mostNominations.title}</strong>, receiving <strong>${mostNominations.nominations}</strong> nominations!</p>
+            <br>
         </div>
         <div class="fact4">
             <p><strong>${highestUsAndCanada.title}</strong> earned the most in US and Canadian markets. They earned <strong>$${highestUsAndCanada.gross_us_canada}</strong> total!</p>
+            <br>
         </div>
         <div class="fact5">
             <p><strong>${highestWW.title}</strong> earned the most in the world wide market. They earned <strong>$${highestWW.gross_ww}.</strong></p>
+            <br>
         </div>
         <div class="fact6">
             <p><strong>${lowestBudget.title}</strong> had the lowest budget. They only had <strong>$${lowestBudget.budget}</strong> to work with</p>
+            <br>
+        </div>
+        <div class="static-facts_divider">
+            <p>________________________________________________________</p>
+        </div>
+        <div class="static_facts" "text-align:center";>
+            <p><strong>Wonder Nuggets</strong></p>
+            <br>
+        <div class="fact7">
+            <p>Disney turned down "Back to the Future" because they thought Marty had a bit of an Oedipus vibe with his mom.</p>
+            <br>
+        </div>
+        <div class="fact8">
+            <p> The tarantula from Home Alone was named Barry.</p>
+            <br>
+        </div>
+        <div class="fact9">
+            <p> The sound of the velociraptors communicating in Jurassic Park is actually the sound of tortoises mating.</p>
+            <br>
+        </div>
+        <div class="fact10">
+            <p> Katharine Hepburn holds the record for the most individual Oscar wins at 4 - all of them in the Best Actress category.</p>
+            <br>
+        </div>
+        <div class="fact11">
+            <p> Sylvester Stallone holds the record for the most Razzie awards with 12 wins and 40 nominations.</p>
+            <br>
+        </div>
+        <div class="fact12">
+            <p> There are 116 f-bombs in Deadpool & Wolverine.</p>
+            <br>
+        </div>
+        <div class="fact13">
+            <p><strong>Pulp Fiction</strong> had an $8 million budget and grossed over $200 million at the box office.</p>
+            <br>
         </div>
     </div>
 `;

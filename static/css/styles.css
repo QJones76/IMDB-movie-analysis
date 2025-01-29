@@ -183,6 +183,10 @@ h3 {
 #chart2 {
   height: 600px;
   width: 500px;
+  border-radius: 15px;
+  overflow:scroll;
+  background-color: rgb(78, 201, 184);
+  padding: 10px;
 }
 
 #chart3 {
@@ -197,13 +201,13 @@ h3 {
 
 /* Styling the slider bar */
 #year-range-slider .noUi-connect {
-  background-color: purple; /* Purple slider track */
+  background-color: rgb(95, 22, 190); /* Purple slider track */
 }
 
 /* Styling the slider handles */
 #year-range-slider .noUi-handle {
-  background-color: purple; /* Purple handles */
-  border: 2px solid black;  /* Optional: add a border to handles */
+  background-color: rgb(95, 22, 190) /* Purple handles */
+  border: 5px solid black;  /* Optional: add a border to handles */
   border-radius: 50%;       /* Optional: make handles circular */
 }
 
