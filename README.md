@@ -1,5 +1,8 @@
 # Repository: IMDB-movie-analysis
 
+[!Top Charts](https://github.com/QJones76/IMDB-movie-analysis/issues/9#issue-2817138658)
+[!Bottom Charts](https://github.com/QJones76/IMDB-movie-analysis/issues/10#issue-2817139319)
+
 ## Usage: How we got here and how to do the same
 
 ---
