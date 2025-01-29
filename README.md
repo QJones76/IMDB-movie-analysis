@@ -30,7 +30,7 @@ Our "index.html' and "styles.css" is where all of the front-end creation of HTML
 ##### back end:
 Inside our "app.js" file is where we created functions to run our filtering of the data with user interaction and building the charts in our dashboard. The order of our functions follow this structure: fetching the data, dynamically adding filter elements, and adding event listeners for those elements; grabbing the filtered values; using those values to filter the entire dataset; building the treemap chart, the Fun Facts section, the bubble chart, and a static correlation coefficient heatmap; creating a function that updates the dashboard; and, finally, initializing the dashboard.
 
-For more information about how to interpret correlation heatmaps, please refer to this reference document: [Guide to Interpreting Heatmaps](https://github.com/QJones76/IMDB-movie-analysis/issues/7)
+For more information about how to interpret correlation heatmaps, please refer to this reference document: [Guide to Interpreting Heatmaps]([https://github.com/QJones76/IMDB-movie-analysis/issues/7](https://github.com/QJones76/IMDB-movie-analysis/issues/8#issue-2817119843))
 
 ---
 
