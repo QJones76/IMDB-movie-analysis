@@ -101,7 +101,7 @@ const colors = [
     "#7570B3", // purple
     "#E7298A", // pink
     "#66A51E", // green vibrant
-    "#E6AB02", // piss-yellow
+    "#E6AB02", // Catheter-bag
     "#1B9E77", // teal green
     "#B07AA1", // muted lavender
     "#DC863B", // burnt orange
@@ -217,6 +217,66 @@ function buildTreemap(filteredData) {
         .attr("font-size", "16px")
         .attr("fill", "white");
 }
+
+// Build Holly's fun facts
+// loop through the entire dataset to find the fun facts
+function updateFunFacts(filteredData) {
+
+    // Select the correct chart class
+    const chart2Element = document.querySelector('#chart2');
+
+    // Remove existing content
+    chart2Element.innerHTML = '';
+
+    // Check if the dataset is empty. If it is, add a message to the HTML element
+    if (!filteredData.length) {
+        chart2Element.innerHTML = "<p>YOUR DATA IS BROKEN AGAIN NERD!</p>";
+        return;
+    }
+
+    const highestRated = filteredData.reduce((prev, curr) => (curr.rating > prev.rating ? curr : prev), filteredData[0]);
+    const lowestRated = filteredData.reduce((prev, curr) => (curr.rating < prev.rating ? curr : prev), filteredData[0]);
+    const mostNominations = filteredData.reduce((prev, curr) => (curr.nominations > prev.nominations ? curr : prev), filteredData[0]);
+    const highestUsAndCanada = filteredData.reduce((prev, curr) => (curr.gross_us_canada > prev.gross_us_canada ? curr : prev), filteredData[0]);
+    const highestWW = filteredData.reduce((prev, curr) => (curr.gross_ww > prev.gross_ww ? curr : prev), filteredData[0]);
+    const lowestBudget = filteredData.reduce((prev, curr) => (curr.budget < prev.budget ? curr : prev), filteredData[0]);
+
+    // check all the elements loaded correctly
+    console.log("Highest rated: ", highestRated);
+    console.log("Lowest rated: ", lowestRated);
+    console.log("Most nominated: ", mostNominations);
+    console.log("Highest Us/Canada: ", highestUsAndCanada);
+    console.log("Highest earning ww: ", highestWW);
+    console.log("lowest budget: ", lowestBudget);
+
+    // Create a fun facts section
+    const funFactsHTML = `
+    <div style="font-size:24px;">
+        <div class="fact1">
+            <p><strong>The Highest Rated</strong> movie of the selected fields is <strong>${highestRated.title}</strong> with an IMDB rating of <strong>${highestRated.rating}</strong>.</p>
+        </div>
+        <div class="fact2">
+            <p><strong>The Lowest Rated</strong> movie of the selected fields is <strong>${lowestRated.title}</strong> with an IMDB rating of <strong>${lowestRated.rating}</strong>.</p>
+        </div>
+        <div class="fact3">
+            <p><strong>The Most Nominated</strong> movie of the selected fields is <strong>${mostNominations.title}</strong>, receiving <strong>${mostNominations.nominations}</strong> nominations!</p>
+        </div>
+        <div class="fact4">
+            <p><strong>${highestUsAndCanada.title}</strong> earned the most in US and Canadian markets. They earned <strong>$${highestUsAndCanada.gross_us_canada}</strong> total!</p>
+        </div>
+        <div class="fact5">
+            <p><strong>${highestWW.title}</strong> earned the most in the world wide market. They earned <strong>$${highestWW.gross_ww}.</strong></p>
+        </div>
+        <div class="fact6">
+            <p><strong>${lowestBudget.title}</strong> had the lowest budget. They only had <strong>$${lowestBudget.budget}</strong> to work with</p>
+        </div>
+    </div>
+`;
+
+    // Append the fun facts to the chart2 element
+    chart2Element.innerHTML = funFactsHTML;
+}
+
 
 // Build Aditi's Bubble chart
 function buildBubbleChart(filteredData) {
@@ -471,6 +531,7 @@ function updateDashboard() {
     let filteredData = filterMovies();
     console.log("Filtered Data Inside updateDashboard:", filteredData);
     buildTreemap(filteredData);
+    updateFunFacts(filteredData);
     buildBubbleChart(filteredData);
 }
 

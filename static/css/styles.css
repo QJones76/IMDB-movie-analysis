@@ -216,3 +216,9 @@ h3 {
   font-size: 24px;
   font-weight: bold;
 }
+
+div #fact1 {
+  font-size: 24px;
+  background-color: #45a049;
+  color: #45a049;
+}
