@@ -144,79 +144,92 @@ function filterMovies() {
 
 // Build Quinn's treemap
 function buildTreemap(filteredData) {
+    // Debugging log to verify the structure of filteredData
+    console.log("Filtered Data:", filteredData);
+
     // Sort data by gross_ww in descending order for the top 50 movies
     const topMovies = filteredData.sort((a, b) => b.gross_ww - a.gross_ww).slice(0, 50);
 
     // Start by giving treemap a hierarchy
     const root = d3.hierarchy({ children: topMovies })
-        .sum(d => d.gross_ww)
-        .sort((a, b) => b.value - a.value);
+        .sum(d => d.gross_ww) 
+        .sort((a, b) => b.value - a.value); 
 
     // Customize layout
     const treemapLayout = d3.treemap()
-        .size([1200, 600]) // Size must be the same as the parent HTML container
-        .padding(2);
+        .size([1200, 600]) 
+        .padding(2); 
 
     // Assign the root hierarchy to the customized layout
     treemapLayout(root);
 
-    // Remove the previous chart
+    // Remove the previous chart to avoid overlapping elements
     d3.select("#chart1").selectAll("svg").remove();
 
     // Append new svg element in chart container with id of chart1
     const svg = d3.select("#chart1")
         .append("svg")
-        .attr("width", 1500)
-        .attr("height", 600);
+        .attr("width", 1500) 
+        .attr("height", 600); 
 
     // Create a new group to hold all the elements
     const nodes = svg.selectAll("g")
-        .data(root.leaves())
+        .data(root.leaves()) 
         .enter()
         .append("g")
-        .attr("transform", d => `translate(${d.x0},${d.y0})`);
+        .attr("transform", d => `translate(${d.x0},${d.y0})`); 
 
     // Make the node rectangular
     nodes.append("rect")
-    .attr("width", d => d.x1 - d.x0)
-    .attr("height", d => d.y1 - d.y0)
-    .attr("fill", (d, i) => colors[i % colors.length])
-    // Add event listener for mouse hover tooltip functionality
-    .on("mouseover", function(event, d) {
-        d3.select("#tooltip")
-          .style("visibility", "visible")
-          .html(`<strong>Title:</strong> ${d.data.title}<br>
-                 <strong>Year:</strong> ${d.data.year}<br>
-                 <strong>Gross WW:</strong> $${d.data.gross_ww.toLocaleString()}<br>
-                 <strong>Genres:</strong> ${d.data.genres}`);
-    })
-    .on("mousemove", function(event) {
-        d3.select("#tooltip")
-          .style("top", (event.pageY + 10) + "px")
-          .style("left", (event.pageX + 10) + "px");
-    })
-    // Add event listener for if the mouse isn't currently on an element
-    .on("mouseout", function() {
-        d3.select("#tooltip").style("visibility", "hidden");
-    });
+        .attr("width", d => d.x1 - d.x0)
+        .attr("height", d => d.y1 - d.y0) 
+        .attr("fill", (d, i) => colors[i % colors.length]) // Use a color palette to fill rectangles
+        // Add event listener for mouse hover tooltip functionality
+        .on("mouseover", function(event, d) {
+            d3.select("#tooltip")
+              .style("visibility", "visible")
+              .html(`<strong>Title:</strong> ${d.data.title}<br>
+                     <strong>Year:</strong> ${d.data.year}<br>
+                     <strong>Gross WW:</strong> $${d.data.gross_ww.toLocaleString()}<br>
+                     <strong>Genres:</strong> ${d.data.genres}`);
+        })
+        .on("mousemove", function(event) {
+            const tooltip = d3.select("#tooltip");
+            const tooltipWidth = tooltip.node().offsetWidth;
+            const tooltipHeight = tooltip.node().offsetHeight;
 
-     // Add the tooltip container 
-     d3.select("body").append("div")
-     .attr("id", "tooltip")
-     .style("position", "absolute")
-     .style("background", "white")
-     .style("border", "1px solid black")
-     .style("padding", "5px")
-     .style("visibility", "hidden");
+            tooltip.style("top", Math.min(window.innerHeight - tooltipHeight, event.pageY + 10) + "px")
+                   .style("left", Math.min(window.innerWidth - tooltipWidth, event.pageX + 10) + "px");
+        })
+        // Add event listener for if the mouse isn't currently on an element
+        .on("mouseout", function() {
+            d3.select("#tooltip").style("visibility", "hidden");
+        });
 
-    // Append text element inside each group
+    // Add the tooltip container
+    d3.select("body").append("div")
+        .attr("id", "tooltip")
+        .style("position", "absolute")
+        .style("background", "white") 
+        .style("border", "1px solid black") 
+        .style("padding", "5px") 
+        .style("visibility", "hidden"); 
+
+    // Append text element inside each group for displaying movie titles
     nodes.append("text")
-        .attr("x", 5)
-        .attr("y", 15)
+        .attr("x", 5) 
+        .attr("y", 15) 
         .text(d => d.data.title)
-        .attr("font-size", "16px")
-        .attr("fill", "white");
+        .attr("font-size", "16px") 
+        .attr("fill", "white") 
+        // Use textwrap to handle long titles dynamically
+        .each(function(d) {
+            d3.select(this).call(
+                textwrap().bounds({ width: d.x1 - d.x0 - 10, height: d.y1 - d.y0 - 10 }) // Bounds to fit within the node
+            );
+        });
 }
+
 
 // Build Holly's fun facts
 // loop through the entire dataset to find the fun facts
