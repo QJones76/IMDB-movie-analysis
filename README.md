@@ -1,6 +1,7 @@
 # IMDB-movie-analysis Dashboard
 
 ![Image](https://github.com/user-attachments/assets/dc298f9d-2ee8-4922-8a1a-c050dc8ea1f2)
+![Image](https://github.com/user-attachments/assets/3de80ace-599e-4643-8d3c-bdf1a75019af)
 
 ## Usage: How we got here and how to do the same
 
