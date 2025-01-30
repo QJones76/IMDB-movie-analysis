@@ -28,7 +28,8 @@ Or, if you are on a mac os system, type:
 ```
 python3 app.py
 ```
-This will launch the flask app on the local server port 5001. 
+This will launch the flask app on the local server port 5001. After the file is running, you can open the index.html file and play around with the year-range slider and the genre selection box yourself to see what movies, facts, and companies are relevent to your favorite genres and time frames. 
+
 
 #### Building the Dashboard:
 With our data retrieval system set up, we then had to build both the front and back end code for our dashboard. 
