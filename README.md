@@ -1,7 +1,6 @@
 # IMDB-movie-analysis Dashboard
 
-![top charts](https://private-user-images.githubusercontent.com/137737471/407593828-161acd88-b1e6-4722-bf4d-d9d8b36f399d.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzgxMjEwMjMsIm5iZiI6MTczODEyMDcyMywicGF0aCI6Ii8xMzc3Mzc0NzEvNDA3NTkzODI4LTE2MWFjZDg4LWIxZTYtNDcyMi1iZjRkLWQ5ZDhiMzZmMzk5ZC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMTI5JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDEyOVQwMzE4NDNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT04ZjZlMWQxZTJkMDY4MzcyZjAxNDM4MTM2MmYwNTQ1N2FlYzZhYzM3ZjQ3ODQ5OTU2NTAwNWNlM2U5ZDBiYTVlJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.ycgeHezfabPFmbIAHstt-deCuebjsaycJcvvq-3zUKo)
-![img](https://github.com/QJones76/IMDB-movie-analysis/issues/10#issue-2817139319)
+![Image](https://github.com/user-attachments/assets/dc298f9d-2ee8-4922-8a1a-c050dc8ea1f2)
 
 ## Usage: How we got here and how to do the same
 
