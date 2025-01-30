@@ -95,7 +95,7 @@ function loadMovieData() {
     });
 }
 
-// Add custom color scale for charts
+// Add custom color scale for charts and their names
 const colors = [
     "#D95F02", // orange
     "#7570B3", // purple
@@ -177,13 +177,7 @@ function buildTreemap(filteredData) {
         .data(root.leaves()) 
         .enter()
         .append("g")
-        .attr("transform", d => `translate(${d.x0},${d.y0})`); 
-
-    // Make the node rectangular
-    nodes.append("rect")
-        .attr("width", d => d.x1 - d.x0)
-        .attr("height", d => d.y1 - d.y0) 
-        .attr("fill", (d, i) => colors[i % colors.length]) // Use a color palette to fill rectangles
+        .attr("transform", d => `translate(${d.x0},${d.y0})`)
         // Add event listener for mouse hover tooltip functionality
         .on("mouseover", function(event, d) {
             d3.select("#tooltip")
@@ -204,7 +198,14 @@ function buildTreemap(filteredData) {
         // Add event listener for if the mouse isn't currently on an element
         .on("mouseout", function() {
             d3.select("#tooltip").style("visibility", "hidden");
-        });
+        }); 
+
+    // Make the node rectangular
+    nodes.append("rect")
+        .attr("width", d => d.x1 - d.x0)
+        .attr("height", d => d.y1 - d.y0) 
+        .attr("fill", (d, i) => colors[i % colors.length]); // Use a color palette to fill rectangles
+        
 
     // Add the tooltip container
     d3.select("body").append("div")
@@ -450,13 +451,7 @@ function buildBubbleChart(filteredData) {
         .data(root.leaves())
         .enter()
         .append("g")
-        .attr("transform", d => `translate(${d.x},${d.y})`);
-
-    // Add the bubbles
-    node.append("circle")
-        .attr("r", d => sizeScale(d.value))
-        .attr("fill", (d, i) => colors[i % colors.length])
-        .attr("opacity", 0.6)
+        .attr("transform", d => `translate(${d.x},${d.y})`)
         .on("mouseover", function(event, d) {
             // Add tooltip functionality
             d3.select("#tooltip")
@@ -474,6 +469,13 @@ function buildBubbleChart(filteredData) {
         .on("mouseout", function() {
             d3.select("#tooltip").style("visibility", "hidden");
         });
+
+    // Add the bubbles
+    node.append("circle")
+        .attr("r", d => sizeScale(d.value))
+        .attr("fill", (d, i) => colors[i % colors.length])
+        .attr("opacity", 0.6);
+        
 
     // Add text labels inside each bubble
     node.append("text")

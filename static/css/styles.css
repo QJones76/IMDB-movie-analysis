@@ -178,8 +178,6 @@ h3 {
   width: 1200px;
 }
 
-
-
 #chart2 {
   height: 600px;
   width: 500px;
@@ -201,28 +199,17 @@ h3 {
 
 /* Styling the slider bar */
 #year-range-slider .noUi-connect {
-  background-color: rgb(95, 22, 190); /* Purple slider track */
+  background-color: purple; /* Purple slider track */
 }
 
 /* Styling the slider handles */
 #year-range-slider .noUi-handle {
-  background-color: rgb(95, 22, 190) /* Purple handles */
-  border: 5px solid black;  /* Optional: add a border to handles */
+  background-color: purple; /* Purple handles */
+  border: 2px solid black;  /* Optional: add a border to handles */
   border-radius: 50%;       /* Optional: make handles circular */
 }
 
 /* Styling the slider base (track) */
 #year-range-slider .noUi-base {
   background-color: #e0e0e0; /* Light gray background for contrast */
-}
-
-#tick text {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-div #fact1 {
-  font-size: 24px;
-  background-color: #45a049;
-  color: #45a049;
 }
