@@ -3,6 +3,11 @@
 ![Image](https://github.com/user-attachments/assets/dc298f9d-2ee8-4922-8a1a-c050dc8ea1f2)
 ![Image](https://github.com/user-attachments/assets/3de80ace-599e-4643-8d3c-bdf1a75019af)
 
+## Purpose
+---
+The purpose of this dashboard is to give the user the ability to see popular movies from different genres and year-ranges. It does this by displaying both a top 50 movies tree map, and some fun facts that will update along with the filters, as well as, some static facts to keep the users interest. Furthermore, the dashboard breaks down who are the big players behind these movies in terms of production companies, and provides a heatmap showcasing correlations that might be interesting to look at in the future. 
+
+---
 ## Usage: How we got here and how to do the same
 
 ---
@@ -31,15 +36,16 @@ With our data retrieval system set up, we then had to build both the front and b
 Our "index.html' and "styles.css" is where all of the front-end creation of HTML elements and their styling are stored.
 
 ##### back end:
-Inside our "app.js" file is where we created functions to run our filtering of the data with user interaction and building the charts in our dashboard. The order of our functions follow this structure: fetching the data, dynamically adding filter elements, and adding event listeners for those elements; grabbing the filtered values; using those values to filter the entire dataset; building the treemap chart, the Fun Facts section, the bubble chart, and a static correlation coefficient heatmap; creating a function that updates the dashboard; and, finally, initializing the dashboard.
+Inside our "app.js" file is where we created functions to run our filtering of the data with user interaction and building the charts in our dashboard. The order of our functions follow this structure: fetching the data, dynamically adding filter elements, and adding event listeners for those elements; grabbing the filtered values; using those values to filter the entire dataset; building the tree map chart, the Fun Facts section, the bubble chart, and a static correlation coefficient heatmap; creating a function that updates the dashboard; and, finally, initializing the dashboard.
 
 For more information about how to interpret correlation heatmaps, please refer to this reference document: [Guide to Interpreting Heatmaps](https://github.com/QJones76/IMDB-movie-analysis/issues/8#issue-2817119843)
-Or you can visit the bottom of the "processing_data.csv" file to see how we reached the conslusions.
+Or you can visit the bottom of the "processing_data.csv" file to see how we reached these calculations.
 
 ---
 
-## References
+## References and Ethicality
 
+It is always important to keep the ethics in mind when dealing with data. While this is a project done for the sake of a educational program, it should be noted that both the public accessibility and the license of the data give us a large width in terms of collecting, reassembling, and publishing the data. We have done our own due diligence to include a copy of the license below for other to do the same if they choose to play around even more with the project. With that being said, here is both the dataset and the license. 
 * Dataset
   Raed Addala. (2025). 30,000+ Movies, 60+ Years of Data, Rich Metadata [Data set]. Kaggle. https://doi.org/10.34740/KAGGLE/DSV/10379655
 * Dataset License: [MIT](https://www.mit.edu/~amini/LICENSE.md)
@@ -69,3 +75,4 @@ Slideshow:
 - Guest, C. (Director). (2006). *For Your Consideration* [Film]. Castle Rock Entertainment, Shangri-La Entertainment, and HBO Films.
 - Goddard, J., Houseman, J. (Producers), & Minnelli, V. (Director). (1952). *The Bad and the Beautiful* [Film]. Metro-Goldwyn-Mayer.
 - Chazelle, D. (Director). (2016). *La La Land* [Film]. Summit Entertainment, Marc Platt Productions, and Black Label Media.
+
