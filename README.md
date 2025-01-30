@@ -45,7 +45,7 @@ Or you can visit the bottom of the "processing_data.csv" file to see how we reac
 ## References and Ethicality
 
 ---
-It is always important to keep the ethics in mind when dealing with data. While this is a project done for the sake of a educational program, it should be noted that both the public accessibility and the license of the data give us a large width in terms of collecting, reassembling, and publishing the data. We have done our own due diligence to include a copy of the license below for other to do the same if they choose to play around even more with the project. With that being said, here is both the dataset and the license. 
+It is always important to keep the ethics in mind when dealing with data. While this is a project done for the sake of a educational program, it should be noted that both the public accessibility and the license of the data give us a large width in terms of collecting, reassembling, and publishing the data. We have done our own due diligence to include a copy of the license below for others to do the same if they choose to play around even more with the project. With that being said, here is both the dataset and the license. 
 * Dataset
   Raed Addala. (2025). 30,000+ Movies, 60+ Years of Data, Rich Metadata [Data set]. Kaggle. https://doi.org/10.34740/KAGGLE/DSV/10379655
 * Dataset License: [MIT](https://www.mit.edu/~amini/LICENSE.md)
