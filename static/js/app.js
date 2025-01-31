@@ -547,7 +547,7 @@ function buildHeatmap(data) {
     // Define custom color interpolator for blue-white-red
     const interpolateBuWeRd = t => {
         if (t < 0.5) {
-            return d3.interpolateBlues(2 * t);
+            return d3.interpolateBlues(2 * (t - 0.5));
         } else {
             return d3.interpolateReds(2 * (t - 0.5));
         }
