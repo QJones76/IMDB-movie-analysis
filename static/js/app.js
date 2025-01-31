@@ -1,5 +1,3 @@
-let movieData = []; // Define movieData in the global scope
-
 // This function is for loading movie data from the csv files and dynamically generating genre checkboxes
 function loadMovieData() {
     // Fetch data from the Flask API endpoints
@@ -45,7 +43,7 @@ function loadMovieData() {
             // Add a class to div element for css styling
             checkboxWrapper.classList.add("checkbox-wrapper");
 
-            // Create checkbox input element with id, value, and class for css styling
+            // Create checkbox input element with id, value, and class for css styling and later js parsing
             let checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.id = genre;
@@ -84,18 +82,18 @@ function loadMovieData() {
 
         // Process heatmap data
         const heatmapData = heatmapDataResponse;
-        console.log("Heatmap Data:", heatmapData);
 
         // Build heatmap
+        // Because of its static nature, we will call the function here instead of in the update dashboard function
         buildHeatmap(heatmapData);
     })
-    // Add a condition to catch data fetching errors
+    // Add a condition to catch data fetching errors jsut in case
     .catch(error => {
         console.error("Error fetching data:", error);
     });
 }
 
-// Add custom color scale for charts and their names
+// Add custom color scale for charts and their custom names (Some are not the  real names of the colors)
 const colors = [
     "#D95F02", // orange
     "#7570B3", // purple
@@ -121,7 +119,7 @@ function getFilterValues() {
     // Get the selected checkboxes
     let selectedGenres = Array.from(document.querySelectorAll(".genre-checkbox:checked")).map(checkbox => checkbox.value);
 
-    // Return needed values for data populating
+    // Return needed values for chart and fact updates
     return { yearMin: yearRange[0], yearMax: yearRange[1], genres: selectedGenres };
 }
 
@@ -144,8 +142,6 @@ function filterMovies() {
 
 // Build Quinn's treemap
 function buildTreemap(filteredData) {
-    // Debugging log to verify the structure of filteredData
-    console.log("Filtered Data:", filteredData);
 
     // Sort data by gross_ww in descending order for the top 50 movies
     const topMovies = filteredData.sort((a, b) => b.gross_ww - a.gross_ww).slice(0, 50);
@@ -155,7 +151,7 @@ function buildTreemap(filteredData) {
         .sum(d => d.gross_ww) 
         .sort((a, b) => b.value - a.value); 
 
-    // Customize layout
+    // Customize the layout
     const treemapLayout = d3.treemap()
         .size([1200, 600]) 
         .padding(2); 
@@ -163,7 +159,7 @@ function buildTreemap(filteredData) {
     // Assign the root hierarchy to the customized layout
     treemapLayout(root);
 
-    // Remove the previous chart to avoid overlapping elements
+    // Remove the previous chart to allow for the new cahrt populating
     d3.select("#chart1").selectAll("svg").remove();
 
     // Append new svg element in chart container with id of chart1
@@ -181,11 +177,12 @@ function buildTreemap(filteredData) {
         // Add event listener for mouse hover tooltip functionality
         .on("mouseover", function(event, d) {
             d3.select("#tooltip")
-              .style("visibility", "visible")
-              .html(`<strong>Title:</strong> ${d.data.title}<br>
-                     <strong>Year:</strong> ${d.data.year}<br>
-                     <strong>Gross WW:</strong> $${d.data.gross_ww.toLocaleString()}<br>
-                     <strong>Genres:</strong> ${d.data.genres}`);
+                // Make sure visibility is set to visible for when the mouse is on element
+                .style("visibility", "visible")
+                .html(`<strong>Title:</strong> ${d.data.title}<br>
+                    <strong>Year:</strong> ${d.data.year}<br>
+                    <strong>Gross WW:</strong> $${d.data.gross_ww.toLocaleString()}<br>
+                    <strong>Genres:</strong> ${d.data.genres}`);
         })
         .on("mousemove", function(event) {
             const tooltip = d3.select("#tooltip");
@@ -193,7 +190,7 @@ function buildTreemap(filteredData) {
             const tooltipHeight = tooltip.node().offsetHeight;
 
             tooltip.style("top", Math.min(window.innerHeight - tooltipHeight, event.pageY + 10) + "px")
-                   .style("left", Math.min(window.innerWidth - tooltipWidth, event.pageX + 10) + "px");
+                    .style("left", Math.min(window.innerWidth - tooltipWidth, event.pageX + 10) + "px");
         })
         // Add event listener for if the mouse isn't currently on an element
         .on("mouseout", function() {
@@ -204,7 +201,7 @@ function buildTreemap(filteredData) {
     nodes.append("rect")
         .attr("width", d => d.x1 - d.x0)
         .attr("height", d => d.y1 - d.y0) 
-        .attr("fill", (d, i) => colors[i % colors.length]); // Use a color palette to fill rectangles
+        .attr("fill", (d, i) => colors[i % colors.length]); // Use the customized colors array to fill rectangles
         
 
     // Add the tooltip container
@@ -214,6 +211,7 @@ function buildTreemap(filteredData) {
         .style("background", "white") 
         .style("border", "1px solid black") 
         .style("padding", "5px") 
+        // Make sure the default state is hidden
         .style("visibility", "hidden"); 
 
     // Append text element inside each group for displaying movie titles
@@ -226,7 +224,8 @@ function buildTreemap(filteredData) {
         // Use textwrap to handle long titles dynamically
         .each(function(d) {
             d3.select(this).call(
-                textwrap().bounds({ width: d.x1 - d.x0 - 10, height: d.y1 - d.y0 - 10 }) // Bounds to fit within the node
+                // Define teh bounds to fit within the node
+                textwrap().bounds({ width: d.x1 - d.x0 - 10, height: d.y1 - d.y0 - 10 })
             );
         });
 }
@@ -248,20 +247,13 @@ function updateFunFacts(filteredData) {
         return;
     }
 
+    // Calculate the wanted facts
     const highestRated = filteredData.reduce((prev, curr) => (curr.rating > prev.rating ? curr : prev), filteredData[0]);
     const lowestRated = filteredData.reduce((prev, curr) => (curr.rating < prev.rating ? curr : prev), filteredData[0]);
     const mostNominations = filteredData.reduce((prev, curr) => (curr.nominations > prev.nominations ? curr : prev), filteredData[0]);
     const highestUsAndCanada = filteredData.reduce((prev, curr) => (curr.gross_us_canada > prev.gross_us_canada ? curr : prev), filteredData[0]);
     const highestWW = filteredData.reduce((prev, curr) => (curr.gross_ww > prev.gross_ww ? curr : prev), filteredData[0]);
     const lowestBudget = filteredData.reduce((prev, curr) => (curr.budget < prev.budget ? curr : prev), filteredData[0]);
-
-    // check all the elements loaded correctly
-    console.log("Highest rated: ", highestRated);
-    console.log("Lowest rated: ", lowestRated);
-    console.log("Most nominated: ", mostNominations);
-    console.log("Highest Us/Canada: ", highestUsAndCanada);
-    console.log("Highest earning ww: ", highestWW);
-    console.log("lowest budget: ", lowestBudget);
 
     // Create a fun facts section
     const funFactsHTML = `
@@ -327,13 +319,14 @@ function updateFunFacts(filteredData) {
     </div>
 `;
 
-    // Append the fun facts to the chart2 element
+    // Append the fun facts section to the element with the id of chart2
     chart2Element.innerHTML = funFactsHTML;
 }
 
 
 // Build Aditi's Bubble chart
 function buildBubbleChart(filteredData) {
+
     // Create an object to store the sum of gross_ww for each production company
     const productionSums = {};
 
@@ -345,11 +338,13 @@ function buildBubbleChart(filteredData) {
             let cleanedString = d.production_companies;
 
             // Check if the string is enclosed in backticks and remove them
+            // Might need to remove this section later, Brandon showed me the datastructure is differnet
+            // then what I thought
             if (cleanedString.startsWith('`') && cleanedString.endsWith('`')) {
                 cleanedString = cleanedString.slice(1, -1); // Remove backticks
             }
 
-            // Now handle the rest of the string as before, replacing quotes and parsing
+            // Now handle the rest of the string by replacing quotes and parsing correctly, hopefully
             companies = JSON.parse(
                 cleanedString
                     .replace(/'/g, '"')                       // Replace single quotes with double quotes
@@ -368,7 +363,7 @@ function buildBubbleChart(filteredData) {
                 companies = JSON.parse(cleanedString);
             } catch (e2) {
                 try {
-                    // Third attempt: Handle mixed quotes specifically for your case
+                    // Third attempt: Try to handle mixed quotes
                     let adjustedString = d.production_companies
                         .replace(/'/g, '"') // Replace all single quotes with double quotes
                         .replace(/"\\"/g, "'") // Replace escaped double quotes inside quotes
@@ -378,7 +373,7 @@ function buildBubbleChart(filteredData) {
                     companies = JSON.parse(adjustedString);
                 } catch (e3) {
                     try {
-                        // Fourth attempt: Handle mixed quotes with different approach
+                        // Fourth attempt: Try, yet again to hanlde mixed quotes with different approach
                         let mixedQuotesString = d.production_companies
                             .replace(/'/g, '"') // Replace all single quotes with double quotes
                             .replace(/"(?=\w+['’]\w+)/g, match => match.replace('"', "'")) // Adjust double quotes for nested single quotes
@@ -386,7 +381,7 @@ function buildBubbleChart(filteredData) {
                         
                         companies = JSON.parse(mixedQuotesString);
                     } catch (e4) {
-                        // If all else fails, treat the entire string as a single company
+                        // If all else fails, treat the entire string as a single company within the brackets
                         companies = [d.production_companies];
                     }
                 }
@@ -412,7 +407,7 @@ function buildBubbleChart(filteredData) {
         value: value // Sum of gross_ww
     }));
 
-    // Sort the production companies by sum of gross_ww value in descending order
+    // Sort the production companies by sum of gross_ww value in descending order for the top 100
     const top100Companies = companyData.sort((a, b) => b.value - a.value).slice(0, 100);
 
     // Prepare the hierarchy for the bubble chart using d3.hierarchy
@@ -455,8 +450,9 @@ function buildBubbleChart(filteredData) {
         .on("mouseover", function(event, d) {
             // Add tooltip functionality
             d3.select("#tooltip")
-              .style("visibility", "visible")
-              .html(`<strong>Company:</strong> ${d.data.key}<br>
+                // Make sure it is set to visible for mouse hover functionality
+                .style("visibility", "visible")
+                .html(`<strong>Company:</strong> ${d.data.key}<br>
                      <strong>Gross:</strong> $${d.data.value.toLocaleString()}`);
         })
         // Add event listener for tooltips
@@ -657,10 +653,10 @@ function buildHeatmap(data) {
         .call(legendAxis);
 }
 
+// Create a function to update all dynamic charts when called
 function updateDashboard() {
-    console.log("Updating dashboard...");
+    // Define a variable to hold the filtered values
     let filteredData = filterMovies();
-    console.log("Filtered Data Inside updateDashboard:", filteredData);
     buildTreemap(filteredData);
     updateFunFacts(filteredData);
     buildBubbleChart(filteredData);

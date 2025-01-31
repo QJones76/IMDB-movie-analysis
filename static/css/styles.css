@@ -165,7 +165,7 @@ section {
   border-radius: 0px 0px 8px 8px;         
 }
 
-/* Select all h3 elements */
+/* Chart label styling */
 h3 {
   text-align: center;
   padding: 10px;
@@ -205,11 +205,11 @@ h3 {
 /* Styling the slider handles */
 #year-range-slider .noUi-handle {
   background-color: purple; /* Purple handles */
-  border: 2px solid black;  /* Optional: add a border to handles */
-  border-radius: 50%;       /* Optional: make handles circular */
+  border: 2px solid black;  /* add a border to handles */
+  border-radius: 50%;       /* 50% makes the handles circular */
 }
 
-/* Styling the slider base (track) */
+/* Styling the slider base */
 #year-range-slider .noUi-base {
-  background-color: #e0e0e0; /* Light gray background for contrast */
+  background-color: #e0e0e0;
 }

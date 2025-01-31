@@ -33,6 +33,7 @@ def load_csv_to_sqlite():
         heatmap_df = pd.read_csv(heatmap_file)
         heatmap_df.to_sql(heatmap_table_name, conn, if_exists='replace', index=False)
 
+        # Determine if the file exists
         print("CSV files have been successfully written to SQLite database.")
     except Exception as e:
         print(f"An error occurred while loading CSV to SQLite: {e}")
@@ -80,6 +81,8 @@ def get_heatmap_data():
         if 'conn' in locals():
             conn.close()
 
+
+# Create the flask routes that app.js will use to retrieve data
 @app.route('/get-movies', methods=['GET'])
 def get_movies():
     """API endpoint to get movie data."""
