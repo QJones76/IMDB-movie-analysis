@@ -6,14 +6,16 @@
 ## The Main Idea
 
 ---
-The purpose of this dashboard is to give the user the ability to see popular movies from different genres and year-ranges. It does this by displaying both a top 50 movies tree map, and some fun facts that will update along with the filters, as well as, some static facts to keep the users interest. Furthermore, the dashboard breaks down who are the big players are behind these movies in terms of production companies, and provides a heatmap showcasing correlations that might be interesting to look at in the future. 
+The purpose of this dashboard is to provide users with a data-driven exploration of popular movies across different genres and time periods. It achieves this through various statistical visualizations, including a Top 50 Movies Treemap, which ranks films based on their worldwide gross earnings, and a correlation heatmap that highlights potential relationships between key variables such as budget, revenue, ratings, and nominations.
+
+Additionally, the dashboard offers insights into the major production companies shaping the industry by analyzing their financial impact. It also features a mix of dynamic and static statistics, allowing users to observe how different factors influence movie success. By integrating interactive filters, users can refine their analysis and uncover trends in genre popularity, financial performance, and industry influence over time.
 
 ---
 ## Usage: How we got here and how to do the same
 
 ---
 #### Processing the Data:
-We took [this public dataset](https://www.kaggle.com/datasets/raedaddala/top-500-600-movies-of-each-year-from-1960-to-2024) from Kaggle and downloaded the csv provided. We named this file "unprocessed_data.csv" in our "Data" folder. Then, inside of the jupyter notebook named "processing_data.ipynb", we inspected, cleaned, and re-ordered the data for our goals. We then exported that data into a new csv file named, "processed_data.csv". 
+We took [this public dataset](https://www.kaggle.com/datasets/raedaddala/top-500-600-movies-of-each-year-from-1960-to-2024) from Kaggle and downloaded the .csv provided. We named this file "unprocessed_data.csv" in our "Data" folder. Then, inside of the jupyter notebook named "processing_data.ipynb". We inspected, cleaned, and re-ordered the data for our goals. We then exported that data into a new .csv file named, "processed_data.csv". 
 
 #### Storing the Data:
 After we had a cleaned dataset, we imported the data into a sqlite database file named, "movies_analysis.sqlite." Then we created a [flask](https://pypi.org/project/Flask/) app that runs on a local server to access the database and return specific API endpoints. This was all done inside the app.py file. You will need to follow these steps if your cloning the repository for your own exploration. First, open a command-line interface. Follow the instructions to set up a [Conda environment](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) and activate your new environment. Then install all the python libraries we used in the project by typing: 
