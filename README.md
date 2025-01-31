@@ -52,13 +52,19 @@ Ethical responsibility is a key factor when handling data, particularly in proje
 To maintain ethical standards, we have ensured that our data processing and visualization methods remain aligned with best practices in data integrity, avoiding misrepresentation or misleading interpretations. Additionally, we encourage users who wish to explore the dataset further to review the license and adhere to the same ethical guidelines.
 
 Below, we provide both the dataset and its associated license for reference:
-	*	Dataset: Raed Addala. (2025). 30,000+ Movies, 60+ Years of Data, Rich Metadata [Data set]. Kaggle. https://doi.org/10.34740/KAGGLE/DSV/10379655
-	*	Dataset License: MIT License
+```
+		Dataset: Raed Addala. (2025). 30,000+ Movies, 60+ Years of Data, Rich Metadata [Data set]. Kaggle. https://doi.org/10.34740/KAGGLE/DSV/10379655
+```
+		Dataset License: MIT License
 
 For further reading on ethical data practices, consider the following references:
-	*1.	Zook, M., Barocas, S., Boyd, D., Crawford, K., Keller, E., Gangadharan, S. P., & Pasquale, F. (2017). Ten simple rules for responsible big data research. PLOS Computational Biology, 13(3), e1005399. https://doi.org/10.1371/journal.pcbi.1005399
-	*2.	National Academies of Sciences, Engineering, and Medicine. (2018). Data Science and Ethical Responsibilities. Washington, DC: The National Academies Press. https://doi.org/10.17226/25135
-	*3.	Floridi, L., & Taddeo, M. (2016). What is data ethics? Philosophical Transactions of the Royal Society A, 374(2083), 20160360. https://doi.org/10.1098/rsta.2016.0360
+```
+	1.	Zook, M., Barocas, S., Boyd, D., Crawford, K., Keller, E., Gangadharan, S. P., & Pasquale, F. (2017). Ten simple rules for responsible big data research. PLOS Computational Biology, 13(3), e1005399. https://doi.org/10.1371/journal.pcbi.1005399
+```
+	2.	National Academies of Sciences, Engineering, and Medicine. (2018). Data Science and Ethical Responsibilities. Washington, DC: The National Academies Press. https://doi.org/10.17226/25135
+ ```
+	3.	Floridi, L., & Taddeo, M. (2016). What is data ethics? Philosophical Transactions of the Royal Society A, 374(2083), 20160360. https://doi.org/10.1098/rsta.2016.0360
+```
 
 By maintaining ethical considerations in data collection, analysis, and visualization, we ensure that this project upholds the principles of responsible data science while fostering transparency and educational exploration.
 
